@@ -1,0 +1,22 @@
+{
+  "name": "newLEGACYinc-app-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scowalt/newLEGACYinc-app-server.git"
+  },
+  "author": "scowalt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scowalt/newLEGACYinc-app-server/issues"
+  },
+  "homepage": "https://github.com/scowalt/newLEGACYinc-app-server",
+  "dependencies": {
+    "node-gcm": "^0.9.12"
+  }
+}
