@@ -35,12 +35,17 @@ module.exports = function(pool){
 					callback(err);
 					return;
 				}
-				callback(false, rows);
+				var results = []
+				rows.forEach(function(row){
+					results.push(row.registrationId);
+				});
+				callback(false, results);
 			});
 		})
 	}
 
 	return {
-		addRegistrationId: addRegistrationId
+		addRegistrationId: addRegistrationId,
+		getRegistrationIds: getRegistrationIds
 	};
 }

@@ -15,7 +15,7 @@ module.exports = function(secrets, db){
 		message.delayWhileIdle = true;
 		message.timeToLive = 30 * 60; // 30 minutes to hold and retry before timing out
 		// get all of the registration ids from the database]
-		db.gcm.getRegistraionIds(function(err, ids){
+		db.gcm.getRegistrationIds(function(err, ids){
 			if (err){
 				console.log(err);
 				return;
@@ -29,6 +29,7 @@ module.exports = function(secrets, db){
 
 			// for each chunk of ids
 			chunks.forEach(function(chunk){
+				console.log(chunk);
 				// send the message to the registration ids using the sender
 				sender.send(message, chunk, secrets.gcm.retries, function (err, result){
 					if (err){
@@ -40,5 +41,9 @@ module.exports = function(secrets, db){
 				});
 			});
 		});
+	}
+
+	return {
+		send: send
 	}
 }
