@@ -5,4 +5,8 @@ module.exports = function(secrets, db){
 	function send(title, message){
 		// TODO send meesage from each of the modules
 	};
+
+	return {
+		send: send
+	};
 }

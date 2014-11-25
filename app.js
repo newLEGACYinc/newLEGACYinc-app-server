@@ -10,7 +10,7 @@ var secrets = require('./secrets.js');
 var db = require('./db')(secrets.db);
 var routes = require('./routes')();
 var jobs = require('./jobs')();
-var send = require('./send')(secrets, db);
+var sender = require('./send')(secrets, db);
 var middleware = require('./middleware')(secrets);
 
 // EXPRESS CONFIG
@@ -19,6 +19,7 @@ app.use(middleware.basicAuth);
 
 // EXPRESS ROUTING
 app.put('/gcm/register', routes.gcmRegister(db));
+app.post('/message', routes.sendMessage(sender));
 
 // SERVER INIT
 var config = {
