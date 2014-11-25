@@ -1,24 +1,19 @@
-/**
- * IMPORTS
- */
+// LIBRARY IMPORTS
 var gcm = require('node-gcm');
+var express = require('express');
+var app = express();
+
+// MODULE IMPORTS
 var secrets = require('./secrets.js');
+var db = require('./db')(secrets.db);
+var routes = require('./routes')();
+var jobs = require('./jobs')();
 
-function main(){
-    var message = new gcm.Message();
-    var sender = new gcm.Sender(secrets.gcm.apikey);
-    var registrationIds = [];
+// EXPRESS ROUTING
+app.put('/gcm/register', routes.gcmRegister(db));
 
-    // Value the payload data to send
-    message.addData('message', 'test');
-    message.addData('title', 'Push Notification Test');
-    message.addData('msgcnt', '2');
-    message.collapseKey = 'demo';
-    message.delayWhileIdle = true;
-    message.timeToLive = 30 * 60; // 30 minutes
-
-    // At least one reg id require
-
-}
-
-main();
+// SERVER INIT
+var server = app.listen(8080, function (){
+    var host = server.address().address;
+    var port = server.address().port;
+});

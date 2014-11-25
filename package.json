@@ -18,6 +18,8 @@
   "homepage": "https://github.com/scowalt/newLEGACYinc-app-server",
   "dependencies": {
     "apn": "^1.6.2",
+    "express": "^4.10.3",
+    "mysql": "^2.5.3",
     "node-gcm": "^0.9.12"
   }
 }
