@@ -1,12 +1,12 @@
 module.exports = function(db){
 	return function(req, res){
-		var registrationId = req.registrationId;
+		var registrationId = req.body.registrationId;
 		db.gcm.addRegistrationId(registrationId, function(err, results){
 			if (err){
 				console.log(err);
 				return;
 			}
-			console.log(results);
+			res.send('Ok');
 		});
 	};
 };
