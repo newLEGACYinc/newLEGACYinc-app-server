@@ -8,16 +8,36 @@ module.exports = function(pool){
 				callback(err);
 				return;
 			}
-			connection.query(sql, inserts, function(err, results){
+			connection.query(sql, inserts, function(err, result){
 				connection.release();
 				if(err){
 					console.log(err);
 					callback(err);
 					return;
 				}
-				callback(false, results);
+				callback(false, result);
 			});
 		});
+	}
+
+	function getRegistrationIds(callback){
+		var sql = 'SELECT (registrationId) from gcmRegistrationIds';
+		pool.getConnection(function(err, connection){
+			if (err){
+				console.log(err);
+				callback(err);
+				return;
+			}
+			connection.query(sql,[],function(err, rows, fields){
+				connection.release();
+				if (err){
+					console.log(err);
+					callback(err);
+					return;
+				}
+				callback(false, rows);
+			});
+		})
 	}
 
 	return {
