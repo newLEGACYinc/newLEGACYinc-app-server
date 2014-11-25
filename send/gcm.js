@@ -5,10 +5,10 @@ module.exports = function(secrets, db){
 	// setup
 	var sender = new gcm.Sender(secrets.gcm.apiKey);
 
-	function send(title, message, key){
+	function send(title, messageText, key){
 		// construct message
 		var message = new gcm.Message();
-		message.addData('message', message);
+		message.addData('message', messageText);
 		message.addData('title', title);
 		message.addData('msgcnt', '2'); // notification in status bar
 		message.collapseKey = key;
@@ -29,7 +29,6 @@ module.exports = function(secrets, db){
 
 			// for each chunk of ids
 			chunks.forEach(function(chunk){
-				console.log(chunk);
 				// send the message to the registration ids using the sender
 				sender.send(message, chunk, secrets.gcm.retries, function (err, result){
 					if (err){
