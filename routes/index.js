@@ -1,9 +1,9 @@
 module.exports = function(){
-	var gcmRegister = require(__dirname + '/gcmRegister');
+	var gcm = require(__dirname + '/gcm')();
 	var sendMessage = require(__dirname + '/sendMessage');
 
 	return {
-		gcmRegister : gcmRegister,
+		gcm : gcm,
 		sendMessage : sendMessage
 	}
 };

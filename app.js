@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 app.use(middleware.basicAuth);
 
 // EXPRESS ROUTING
-app.put('/gcm/register', routes.gcmRegister(db));
+app.put('/gcm/register', routes.gcm.register(db));
+app.put('/gcm/settings', routes.gcm.settings(db));
 app.post('/message', routes.sendMessage(sender));
 
 // SERVER INIT
