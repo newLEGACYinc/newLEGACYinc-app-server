@@ -10,11 +10,11 @@ module.exports = function(secrets, db){
 		var message = new gcm.Message();
 		message.addData('message', messageText);
 		message.addData('title', title);
-		message.addData('msgcnt', '2'); // notification in status bar
+		message.addData('msgcnt', '1'); // notification in status bar
 		message.collapseKey = key;
-		message.delayWhileIdle = true;
+		message.delayWhileIdle = false; // notify even when phone is idle
 		message.timeToLive = 30 * 60; // 30 minutes to hold and retry before timing out
-		// get all of the registration ids from the database]
+		// get all of the registration ids from the database
 		db.gcm.getRegistrationIds(function(err, ids){
 			if (err){
 				console.log(err);
