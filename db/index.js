@@ -8,8 +8,10 @@ module.exports = function(config){
 
 	// import modules
 	var gcm = require(__dirname + '/gcm')(pool);
+	var settings = require(__dirname + '/settings')(pool);
 
 	return {
-		gcm: gcm
+		gcm: gcm,
+		settings: settings
 	};
 }

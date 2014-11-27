@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 // MODULE IMPORTS
 var secrets = require('./secrets.js');
 var db = require('./db')(secrets.db);
-var routes = require('./routes')();
-var jobs = require('./jobs')();
+var routes = require('./routes');
+var jobs = require('./jobs');
 var sender = require('./send')(secrets, db);
 var middleware = require('./middleware')(secrets);
 
@@ -19,8 +19,9 @@ app.use(middleware.basicAuth);
 
 // EXPRESS ROUTING
 app.put('/gcm/register', routes.gcm.register(db));
-app.put('/gcm/settings', routes.gcm.settings(db));
 app.post('/message', routes.sendMessage(sender));
+app.put('/settings', routes.settings(db).update);
+app.get('/settings', routes.settings(db).get);
 
 // SERVER INIT
 var config = {

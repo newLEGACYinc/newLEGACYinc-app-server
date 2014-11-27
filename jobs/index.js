@@ -1,3 +1,3 @@
-module.exports = function(){
+module.exports = (function(){
 	// setup and start jobs
-};
+})();

@@ -1,6 +1,6 @@
 module.exports = function(pool){
 	function addRegistrationId(id, callback){
-		var sql = 'INSERT INTO gcmRegistrationIds (registrationId) VALUES (?)';
+		var sql = 'INSERT INTO devices (id, type) VALUES (?,"GCM")';
 		var inserts = [id];
 		pool.getConnection(function(err, connection){
 			if (err){
@@ -21,7 +21,7 @@ module.exports = function(pool){
 	}
 
 	function getRegistrationIds(callback){
-		var sql = 'SELECT (registrationId) from gcmRegistrationIds';
+		var sql = 'SELECT (id) from devices WHERE type="GCM"';
 		pool.getConnection(function(err, connection){
 			if (err){
 				console.log(err);
@@ -37,7 +37,7 @@ module.exports = function(pool){
 				}
 				var results = []
 				rows.forEach(function(row){
-					results.push(row.registrationId);
+					results.push(row.id);
 				});
 				callback(false, results);
 			});
