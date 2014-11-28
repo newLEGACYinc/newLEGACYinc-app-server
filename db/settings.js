@@ -20,7 +20,27 @@ module.exports = function(pool){
 		});
 	}
 
+	function update(id, type, data, callback){
+		var sql = "UPDATE devices SET youTube=?, hitbox=?, twitch=? WHERE id=? and type=?";
+		var inserts = [data.youTube, data.hitbox, data.twitch, id, type];
+		pool.getConnection(function(err,connection){
+			if(err){
+				console.log(err);
+				return callback(err);
+			}
+			connection.query(sql, inserts, function(err, data){
+				connection.release();
+				if (err){
+					console.log(err);
+					return callback(err);
+				}
+				return callback(false, data);
+			});
+		});
+	}
+
 	return {
-		get: get
+		get: get,
+		update: update
 	}
 }

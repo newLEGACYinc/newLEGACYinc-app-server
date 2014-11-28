@@ -11,8 +11,7 @@ module.exports = function(pool){
 			connection.query(sql, inserts, function(err, result){
 				connection.release();
 				if(err){
-					console.log(err);
-					callback(err);
+					callback(err, result);
 					return;
 				}
 				callback(false, result);
