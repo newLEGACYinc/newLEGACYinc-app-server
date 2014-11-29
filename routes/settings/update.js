@@ -1,4 +1,7 @@
 module.exports = function(db){
+	// library import
+	var util = require('util');
+
 	return function(req, res){
 		var id = req.headers.id;
 		var type = req.headers.type;
