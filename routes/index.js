@@ -1,11 +1,11 @@
 module.exports = (function(){
-	var gcm = require(__dirname + '/gcm')();
+	var register = require(__dirname + '/register');
 	var sendMessage = require(__dirname + '/sendMessage');
 	var settings = require(__dirname + '/settings');
 
 	return {
-		gcm : gcm,
+		register : register,
 		sendMessage : sendMessage,
 		settings: settings
-	}
+	};
 })();

@@ -7,11 +7,56 @@ module.exports = function(config){
 	var pool = mysql.createPool(config);
 
 	// import modules
-	var gcm = require(__dirname + '/gcm')(pool);
 	var settings = require(__dirname + '/settings')(pool);
 
+	var addRegistrationId = function (id, type, callback){
+		var sql = 'INSERT INTO devices (id, type) VALUES (?, ?)';
+		var inserts = [id, type];
+		pool.getConnection(function(err, connection){
+			if (err){
+				console.log(err);
+				callback(err);
+				return;
+			}
+			connection.query(sql, inserts, function(err, result){
+				connection.release();
+				if(err){
+					callback(err, result);
+					return;
+				}
+				callback(false, result);
+			});
+		});
+	}
+
+	var getRegistrationIds = function(type, callback){
+		var sql = 'SELECT (id) from devices WHERE type=?';
+		var inserts = [type];
+		pool.getConnection(function(err, connection){
+			if (err){
+				console.log(err);
+				callback(err);
+				return;
+			}
+			connection.query(sql,inserts,function(err, rows, fields){
+				connection.release();
+				if (err){
+					console.log(err);
+					callback(err);
+					return;
+				}
+				var results = []
+				rows.forEach(function(row){
+					results.push(row.id);
+				});
+				callback(false, results);
+			});
+		})
+	}
+
 	return {
-		gcm: gcm,
+		addRegistrationId: addRegistrationId,
+		getRegistrationIds: getRegistrationIds,
 		settings: settings
 	};
 }
