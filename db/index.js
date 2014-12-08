@@ -38,7 +38,7 @@ module.exports = function(config){
 				callback(err);
 				return;
 			}
-			connection.query(sql,inserts,function(err, rows, fields){
+			connection.query(sql,inserts,function(err, rows){
 				connection.release();
 				if (err){
 					console.log(err);

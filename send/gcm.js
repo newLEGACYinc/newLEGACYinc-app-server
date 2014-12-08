@@ -15,7 +15,7 @@ module.exports = function(secrets, db){
 		message.delayWhileIdle = false; // notify even when phone is idle
 		message.timeToLive = 30 * 60; // 30 minutes to hold and retry before timing out
 		// get all of the registration ids from the database
-		db.gcm.getRegistrationIds(function(err, ids){
+		db.getRegistrationIds('GCM', function(err, ids){
 			if (err){
 				console.log(err);
 				return;
@@ -36,7 +36,8 @@ module.exports = function(secrets, db){
 						console.log(err);
 						return;
 					}
-					console.log(result);
+					//console.log(result);
+					// TODO iterate through results to prune invalid GCM ids
 				});
 			});
 		});
