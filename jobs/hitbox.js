@@ -3,9 +3,6 @@ module.exports = function(secrets, sender){
 	var request = require('request');
 	var moment = require('moment');
 
-	// module imports
-
-
 	// private variables
 	var KEY = 'hitbox';
 	var lastOnline = moment();

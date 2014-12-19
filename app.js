@@ -38,6 +38,7 @@ winston.add(winston.transports.Console, {colorize: true, timestamp: function(){
     return moment().format('D MMM HH:mm:ss');
 }});
 global.console.log = winston.info;
+global.console.error = winston.error;
 
 // start server
 var server = https.createServer(config,app).listen(443, function (){
