@@ -7,8 +7,8 @@ module.exports = function(secrets, sender){
 
 
 	// private variables
-	var KEY = 'HITBOX';
-	var lastOnline = moment('2014-08-08 01:01:01');
+	var KEY = 'hitbox';
+	var lastOnline = moment();
 
 	/**
 	 * Is the hitbox stream currently live?
@@ -31,7 +31,7 @@ module.exports = function(secrets, sender){
 		});
 	}
 
-	function job(info, done){
+	function job(){
 		isLive(function(error, body){
 			if(error){
 				return console.log(error);
@@ -41,14 +41,12 @@ module.exports = function(secrets, sender){
 			// if more recently online than last time
 			if (liveSince.isAfter(lastOnline)){
 				lastOnline = liveSince;
-				notify(body, done);
-			} else {
-				done();
+				notify(body);
 			}
 		});
 	}
 
-	function notify(body, done){
+	function notify(body){
 		// try to get more information about the stream
 		request('http://api.hitbox.tv/media', function(error, response, body){
 			var title = 'Live on hitbox!';
@@ -70,7 +68,6 @@ module.exports = function(secrets, sender){
 				message = ' '; // TODO
 			}
 			sender.send(title, message, KEY);
-			done();
 		});
 	}
 
