@@ -6,6 +6,6 @@ module.exports = function(secrets, sender){
 	var hitbox = require(__dirname + '/hitbox')(secrets, sender);
 
 	// setup and start jobs
-	new CronJob('0 */1 * * * *', hitbox.job, null, true, 'America/New_York');
+	new CronJob('0 */1 * * * *', hitbox.job, null, true);
 	// TODO create job to tidy invalid APN ids
 };

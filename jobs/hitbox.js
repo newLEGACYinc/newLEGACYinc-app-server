@@ -33,15 +33,17 @@ module.exports = function(secrets, sender){
 
 	function job(){
 		isLive(function(error, body){
-			if(error){
+			if (error){
 				return console.log(error);
 			}
-			var liveSince = moment(body['live_since']);
+			if (body) {
+				var liveSince = moment(body['live_since']);
 
-			// if more recently online than last time
-			if (liveSince.isAfter(lastOnline)){
-				lastOnline = liveSince;
-				notify(body);
+				// if more recently online than last time
+				if (liveSince.isAfter(lastOnline)) {
+					lastOnline = liveSince;
+					notify(body);
+				}
 			}
 		});
 	}
