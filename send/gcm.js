@@ -15,7 +15,7 @@ module.exports = function(secrets, db){
 		message.delayWhileIdle = false; // notify even when phone is idle
 		message.timeToLive = 30 * 60; // 30 minutes to hold and retry before timing out
 		// get all of the registration ids from the database
-		db.getRegistrationIds('GCM', function(err, ids){
+		db.getRegistrationIds('GCM', key, function(err, ids){
 			if (err){
 				console.log(err);
 				return;

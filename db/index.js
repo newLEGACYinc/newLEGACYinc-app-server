@@ -29,9 +29,13 @@ module.exports = function(config){
 		});
 	}
 
-	var getRegistrationIds = function(type, callback){
-		var sql = 'SELECT (id) from devices WHERE type=?';
-		var inserts = [type];
+	var getRegistrationIds = function(type, key, callback){
+		var sql = 'SELECT (id) from devices WHERE type = ?';
+		var inserts = [ type ];
+		if (key){
+			sql += ' AND ?? = 1';
+			inserts.push(key);
+		}
 		pool.getConnection(function(err, connection){
 			if (err){
 				console.log(err);
