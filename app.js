@@ -40,7 +40,7 @@ winston.add(winston.transports.Console, {colorize: true, timestamp: function(){
 global.console.log = winston.info;
 
 // start server
-https.createServer(config,app).listen(443, function (){
+var server = https.createServer(config,app).listen(443, function (){
     var host = server.address().address;
     var port = server.address().port;
 
