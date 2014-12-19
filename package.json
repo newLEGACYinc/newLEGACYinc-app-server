@@ -1,7 +1,7 @@
 {
   "name": "newLEGACYinc-app-server",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.0b",
+  "description": "Server-side application for the newLEGACYinc app",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/scowalt/newLEGACYinc-app-server",
   "dependencies": {
+    "agenda": "^0.6.26",
     "apn": "^1.6.2",
     "body-parser": "^1.9.3",
     "express": "^4.10.x",
+    "moment": "^2.8.4",
     "mysql": "^2.5.3",
-    "node-gcm": "^0.9.12"
+    "node-gcm": "^0.9.12",
+    "request": "^2.51.0"
   }
 }

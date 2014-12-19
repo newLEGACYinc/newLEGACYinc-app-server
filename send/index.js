@@ -6,8 +6,9 @@ module.exports = function(secrets, db){
 
 	function send(title, message, key){
 		// TODO send meesage from each of the modules
+		console.log('called send(' + title + ', ' + message + ', ' + key + ')');
 		gcm.send(title, message, key);
-		apn.send(title,message,key);
+		apn.send(title, message, key);
 	};
 
 	return {

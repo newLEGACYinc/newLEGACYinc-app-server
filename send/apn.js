@@ -16,7 +16,7 @@ module.exports = function(secrets, db){
 			note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
 			note.badge = 0; // don't need a badge
 			//note.sound = "ping.aiff"; // don't need a sound
-			note.alert = message;
+			note.alert = title + ' ' + message;
 			note.payload = {'key': key};
 
 			// for each device

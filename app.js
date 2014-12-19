@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 var secrets = require('./secrets.js');
 var db = require('./db')(secrets.db);
 var routes = require('./routes');
-var jobs = require('./jobs');
 var sender = require('./send')(secrets, db);
+var jobs = require('./jobs')(secrets, sender);
 var middleware = require('./middleware')(secrets);
 
 // EXPRESS CONFIG
