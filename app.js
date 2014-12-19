@@ -4,6 +4,8 @@ var app = express();
 var fs = require('fs');
 var https = require('https');
 var bodyParser = require('body-parser');
+var moment = require('moment');
+var winston = require('winston');
 
 // MODULE IMPORTS
 var secrets = require('./secrets.js');
@@ -30,7 +32,15 @@ var config = {
     passphrase: secrets.ssl.pass
 }
 
-var server = https.createServer(config,app).listen(443, function (){
+// logging
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {colorize: true, timestamp: function(){
+    return moment().format('D MMM HH:mm:ss');
+}});
+global.console.log = winston.info;
+
+// start server
+https.createServer(config,app).listen(443, function (){
     var host = server.address().address;
     var port = server.address().port;
 
