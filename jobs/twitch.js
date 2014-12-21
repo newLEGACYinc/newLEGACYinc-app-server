@@ -22,8 +22,9 @@ module.exports = function(secrets, sender){
 				callback(false, stream);
 			} else {
 				console.error(error);
-				console.error(response.statusCode);
-				console.error(body);
+				if (response) {
+					console.error(response.statusCode);
+				}
 				callback(error);
 			}
 		});

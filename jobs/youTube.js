@@ -40,7 +40,9 @@ module.exports = function(secrets, sender){
 					return callback(false, false);
 				}
 			} else {
-				console.error(response.statusCode);
+				if (response) {
+					console.error(response.statusCode);
+				}
 				console.error(error);
 				return callback(error);
 			}
