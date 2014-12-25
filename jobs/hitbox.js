@@ -34,21 +34,34 @@ module.exports = function(secrets, sender){
 				return console.log(error);
 			}
 			if (body) {
-				var liveSince = moment(body['live_since']);
-
+				var liveSince = moment(new Date(body['live_since'] + ' UTC'));
 				// if more recently online than last time
 				if (liveSince.isAfter(lastOnline)) {
 					lastOnline = liveSince;
-					notify(body);
+					notify();
 				}
 			}
 		});
 	}
 
-	function notify(body){
+	function notify(){
+		trySend();
+	}
+
+	function trySend(){
+		var title = 'Live on hitbox!';
+		getMessage(function(error, message){
+			if (!error && message){
+				sender.send(title, message, KEY);
+			} else {
+				setTimeout(trySend, 500);
+			}
+		});
+	}
+
+	function getMessage(callback){
 		// try to get more information about the stream
 		request('http://api.hitbox.tv/media', function(error, response, body){
-			var title = 'Live on hitbox!';
 			var message;
 			if (!error && response.statusCode == 200){
 				try {
@@ -57,16 +70,18 @@ module.exports = function(secrets, sender){
 					livestream.forEach(function (element) {
 						if (element['media_user_name'] === secrets.hitbox.username) {
 							message = element['media_status'];
+							callback(false, message);
 						}
 					});
 				} catch(e){
-					console.log(e.stack);
+					console.error(e.stack);
+					callback(e);
 				}
+			} else if (error){
+				callback(error);
+			} else {
+				callback(false, false);
 			}
-			if (!message){
-				message = ' '; // TODO
-			}
-			sender.send(title, message, KEY);
 		});
 	}
 
