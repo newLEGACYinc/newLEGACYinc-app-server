@@ -54,7 +54,7 @@ module.exports = function(secrets, sender){
 			if (!error && message){
 				sender.send(title, message, KEY);
 			} else {
-				setTimeout(trySend, 500);
+				setTimeout(trySend, 5000);
 			}
 		});
 	}
@@ -67,21 +67,21 @@ module.exports = function(secrets, sender){
 				try {
 					var media = JSON.parse(body);
 					var livestream = media['livestream'];
-					livestream.forEach(function (element) {
-						if (element['media_user_name'] === secrets.hitbox.username) {
+					for (var i = 0; i < livestream.length; i++){
+						var element = livestream[i];
+						if (element['media_user_name'].toUpperCase() === secrets.hitbox.username.toUpperCase()) {
 							message = element['media_status'];
-							callback(false, message);
+							return callback(false, message);
 						}
-					});
+					}
 				} catch(e){
 					console.error(e.stack);
-					callback(e);
+					return callback(e);
 				}
 			} else if (error){
-				callback(error);
-			} else {
-				callback(false, false);
+				return callback(error);
 			}
+			return callback(false, false);
 		});
 	}
 
