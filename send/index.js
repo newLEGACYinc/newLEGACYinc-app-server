@@ -4,11 +4,11 @@ module.exports = function(secrets, db){
 	var gcm = require(__dirname + '/gcm')(secrets, db);
 
 
-	function send(title, message, key){
+	function send(title, message, data, key){
 		// TODO send meesage from each of the modules
-		console.log('called send(' + title + ', ' + message + ', ' + key + ')');
-		gcm.send(title, message, key);
-		apn.send(title, message, key);
+		console.log('called send(' + title + ', ' + message + ', ' + data + ', ' + key + ')');
+		gcm.send(title, message, data, key);
+		apn.send(title, message, data, key);
 	};
 
 	return {

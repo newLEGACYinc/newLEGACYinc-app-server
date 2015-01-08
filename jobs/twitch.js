@@ -33,7 +33,7 @@ module.exports = function(secrets, sender){
 	function notify(info){
 		var title = 'Live on Twitch!';
 		var message = info['channel']['status'];
-		sender.send(title, message, KEY);
+		sender.send(title, message, {}, KEY);
 	}
 
 	function job(){

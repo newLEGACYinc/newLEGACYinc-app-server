@@ -35,7 +35,7 @@ module.exports = function(secrets, sender){
 				var latestVideoPublished = moment(latestVideoInfo['publishedAt']);
 				if (latestVideoPublished.isAfter(lastVideoTime)){
 					lastVideoTime = latestVideoPublished;
-					return callback(false, latestVideoInfo);
+					return callback(false, latestVideo);
 				} else {
 					return callback(false, false);
 				}
@@ -55,8 +55,8 @@ module.exports = function(secrets, sender){
 			return;
 		}
 		var title = 'New YouTube video!';
-		var message = info['title'];
-		sender.send(title, message, KEY);
+		var message = info.snippet.title;
+		sender.send(title, message, {'videoID': info.id.videoId}, KEY);
 	}
 
 	function job(){

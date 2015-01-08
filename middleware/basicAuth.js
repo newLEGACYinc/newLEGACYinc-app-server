@@ -3,6 +3,7 @@ module.exports = function(secrets){
 		if(req.headers.password === secrets.password) {
 			next();
 		} else {
+			console.error(req);
 			next("non-existent or incorrect password");
 		}
 	}

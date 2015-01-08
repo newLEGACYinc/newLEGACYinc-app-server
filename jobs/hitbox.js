@@ -52,7 +52,7 @@ module.exports = function(secrets, sender){
 		var title = 'Live on hitbox!';
 		getMessage(function(error, message){
 			if (!error && message){
-				sender.send(title, message, KEY);
+				sender.send(title, message, {}, KEY);
 			} else {
 				setTimeout(trySend, 5000);
 			}
@@ -75,7 +75,6 @@ module.exports = function(secrets, sender){
 						}
 					}
 				} catch(e){
-					console.error(e.stack);
 					return callback(e);
 				}
 			} else if (error){

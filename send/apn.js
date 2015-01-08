@@ -4,7 +4,7 @@ module.exports = function(secrets, db){
 
 	var connection = new apn.Connection(secrets.apn);
 
-	function send(title, message, key){
+	function send(title, message, data, key){
 		db.getRegistrationIds('APNs', key, function(error, ids){
 			if (error){
 				console.log(error);
