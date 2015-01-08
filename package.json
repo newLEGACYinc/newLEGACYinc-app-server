@@ -21,10 +21,10 @@
     "body-parser": "^1.9.3",
     "cron": "^1.0.5",
     "express": "^4.10.x",
+    "longjohn": "^0.2.4",
     "moment": "^2.8.4",
     "mysql": "^2.5.3",
     "node-gcm": "^0.9.12",
-    "request": "^2.51.0",
-    "winston": "^0.8.3"
+    "request": "^2.51.0"
   }
 }
