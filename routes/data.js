@@ -1,4 +1,5 @@
 var express = require('express');
+var request = require('request');
 var router = express.Router();
 var Twit = require('twit');
 
@@ -23,6 +24,31 @@ router.get('/twitter', function(req, res){
 		}
 
 		res.status(200).set('Content-Type', 'application/javascript').send(data);
+	});
+});
+
+// YouTube
+router.get('/youtube', function (req, res){
+	var options = {
+		url: 'https://www.googleapis.com/youtube/v3/search',
+		qs: {
+			channelId: process.env.YOUTUBE_CHANNEL_ID,
+			key: process.env.YOUTUBE_API_KEY,
+			order: 'date',
+			part: 'snippet',
+			maxResults: 1
+		}
+	};
+	request(options, function(error, response, body){
+		if(!error && response.statusCode === 200){
+			res.status(200).set('Content-Type', 'application/javascript').send(body);
+		} else {
+			if (response) {
+				console.error(response.statusCode);
+			}
+			console.error(error);
+			res.status(500).send(error);
+		}
 	});
 });
 
