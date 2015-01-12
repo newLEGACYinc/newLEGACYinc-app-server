@@ -1,10 +1,17 @@
 // http://stackoverflow.com/a/16800702/1222411
-module.exports = function(config){
+module.exports = function(){
 	// import mysql library
 	var mysql = require('mysql');
 
 	// initialize connection pool
-	var pool = mysql.createPool(config);
+	var pool = mysql.createPool({
+		'host': process.env.DB_HOST,
+		'user': process.env.DB_USER,
+		'password': process.env.DB_PASS,
+		'database': process.env.DB_DATABASE,
+		'connectionLimit': 5,
+		'supportBigNumbers': true
+	});
 
 	// import modules
 	var settings = require(__dirname + '/settings')(pool);

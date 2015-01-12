@@ -1,6 +1,6 @@
-module.exports = function(sender, secrets){
+module.exports = function(sender){
 	return function(req,res){
-		if (req.body.annouce_password === secrets.announce_password){
+		if (req.body.annouce_password === process.env.ANNOUNCE_PASSWORD){
 			res.status(400).send('incorrect ')
 		} else if (req.body.title && req.body.message && req.body.data){
 			sender.send(req.body.title, req.body.message, req.body.data, 'announcements');

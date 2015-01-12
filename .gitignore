@@ -1,5 +1,7 @@
 # Source files
-secrets.js
+run.bat
+run.sh
+secrets.js.bak
 
 # Logs
 logs

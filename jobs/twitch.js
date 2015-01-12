@@ -1,4 +1,4 @@
-module.exports = function(secrets, sender){
+module.exports = function(sender){
 	// module imports
 	var moment = require('moment');
 	var request = require('request');
@@ -9,9 +9,9 @@ module.exports = function(secrets, sender){
 
 	function isLive(callback){
 		var options = {
-			url: 'https://api.twitch.tv/kraken/streams/' + secrets.twitch.username,
+			url: 'https://api.twitch.tv/kraken/streams/' + process.env.TWITCH_USERNAME,
 			headers: {
-				'Client-ID': secrets.twitch.clientId,
+				'Client-ID': process.env.TWITCH_CLIENT_ID,
 				'Accept': 'application/vnd.twitchtv.v2+json'
 			}
 		};

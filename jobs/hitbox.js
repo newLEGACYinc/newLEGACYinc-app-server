@@ -1,4 +1,4 @@
-module.exports = function(secrets, sender){
+module.exports = function(sender){
 	// library imports
 	var request = require('request');
 	var moment = require('moment');
@@ -12,7 +12,7 @@ module.exports = function(secrets, sender){
 	 * @param callback(error, body))
 	 */
 	function isLive(callback){
-		request('http://api.hitbox.tv/user/' + secrets.hitbox.username, function(error, response, body){
+		request('http://api.hitbox.tv/user/' + process.env.HITBOX_USERNAME, function(error, response, body){
 			if (error){
 				return callback(error);
 			} else if (response.statusCode != 200){
@@ -69,7 +69,7 @@ module.exports = function(secrets, sender){
 					var livestream = media['livestream'];
 					for (var i = 0; i < livestream.length; i++){
 						var element = livestream[i];
-						if (element['media_user_name'].toUpperCase() === secrets.hitbox.username.toUpperCase()) {
+						if (element['media_user_name'].toUpperCase() === process.env.HITBOX_USERNAME.toUpperCase()) {
 							message = element['media_status'];
 							return callback(false, message);
 						}

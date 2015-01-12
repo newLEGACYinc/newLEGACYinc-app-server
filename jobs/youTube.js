@@ -1,4 +1,4 @@
-module.exports = function(secrets, sender){
+module.exports = function(sender){
 	// library imports
 	var moment = require('moment');
 	var request = require('request');
@@ -15,8 +15,8 @@ module.exports = function(secrets, sender){
 		var options = {
 			url: 'https://www.googleapis.com/youtube/v3/search',
 			qs: {
-				channelId: secrets.youTube.channelId,
-				key: secrets.youTube.apiKey,
+				channelId: process.env.YOUTUBE_CHANNEL_ID,
+				key: process.env.YOUTUBE_API_KEY,
 				order: 'date',
 				part: 'snippet',
 				publishedAfter: lastVideoTime.format('YYYY-MM-DDTHH:mm:ssZ')

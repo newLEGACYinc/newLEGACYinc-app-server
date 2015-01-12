@@ -7,16 +7,13 @@ var bodyParser = require('body-parser');
 var moment = require('moment');
 
 // MODULE IMPORTS
-var secrets = require('./secrets.js');
-var db = require('./db')(secrets.db);
+var db = require('./db')();
 var routes = require('./routes');
-var sender = require('./send')(secrets, db);
-var jobs = require('./jobs')(secrets, sender);
-var middleware = require('./middleware')(secrets);
+var sender = require('./send')(db);
+var jobs = require('./jobs')(sender);
 
 // EXPRESS CONFIG
 app.use(bodyParser.json());
-app.use(middleware.basicAuth);
 
 // EXPRESS ROUTING
 app.put('/register', routes.register(db));
@@ -26,10 +23,10 @@ app.get('/settings', routes.settings(db).get);
 
 // SERVER INIT
 var config = {
-    key: fs.readFileSync(secrets.ssl.key),
-    cert: fs.readFileSync(secrets.ssl.certificate),
-    passphrase: secrets.ssl.pass
-}
+    key: fs.readFileSync(__dirname + '/' + process.env.SSL_KEY),
+    cert: fs.readFileSync(__dirname + '/' + process.env.SSL_CERT),
+    passphrase: ''
+};
 
 // logging
 require('longjohn');

@@ -1,11 +1,11 @@
-module.exports = function(secrets, sender){
+module.exports = function(sender){
 	// library imports
 	var CronJob = require('cron').CronJob;
 
 	// module imports
-	var hitbox = require(__dirname + '/hitbox')(secrets, sender);
-	var twitch = require(__dirname + '/twitch')(secrets, sender);
-	var youTube = require(__dirname + '/youTube')(secrets, sender);
+	var hitbox = require(__dirname + '/hitbox')(sender);
+	var twitch = require(__dirname + '/twitch')(sender);
+	var youTube = require(__dirname + '/youTube')(sender);
 
 	// setup and start jobs
 	new CronJob('0 */1 * * * *', hitbox.job, null, true);

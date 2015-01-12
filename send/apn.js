@@ -1,8 +1,11 @@
-module.exports = function(secrets, db){
+module.exports = function(db){
 	// library imports
 	var apn = require('apn');
 
-	var connection = new apn.Connection(secrets.apn);
+	var connection = new apn.Connection({
+		'cert': process.env.APN_CERT,
+		'key': process.env.APN_KEY
+	});
 
 	function send(title, message, data, key){
 		db.getRegistrationIds('APNs', key, function(error, ids){

@@ -1,9 +1,9 @@
-module.exports = function(secrets, db){
+module.exports = function(db){
 	// library imports
 	var gcm = require('node-gcm');
 
 	// setup
-	var sender = new gcm.Sender(secrets.gcm.apiKey);
+	var sender = new gcm.Sender(process.env.GCM_API_KEY);
 
 	function send(title, messageText, data, key){
 		// construct message
@@ -19,13 +19,14 @@ module.exports = function(secrets, db){
 			// divide into groups based on max recipients
 			var chunks = [];
 			while (ids.length > 0){
-				chunks.push(ids.splice(0, secrets.gcm.maxRecipients));
+				chunks.push(ids.splice(0, 1000)); // TODO move constant to config
 			}
 
 			// for each chunk of ids
 			chunks.forEach(function(chunk){
 				// send the message to the registration ids using the sender
-				sender.send(message, chunk, secrets.gcm.retries, function (err, result){
+				// TODO move constant to config
+				sender.send(message, chunk, 4, function (err, result){
 					if (err){
 						// TODO handle errors properly
 						console.log(err);
