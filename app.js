@@ -16,6 +16,7 @@ var jobs = require('./jobs')(sender);
 app.use(bodyParser.json());
 
 // EXPRESS ROUTING
+app.use('/data', routes.data);
 app.put('/register', routes.register(db));
 app.post('/message', routes.sendMessage(sender));
 app.put('/settings', routes.settings(db).update);
