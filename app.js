@@ -2,16 +2,19 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var http = require('http');
 var https = require('https');
 var bodyParser = require('body-parser');
 
 // MODULE IMPORTS
 var db = require('./db')();
-var routes = require('./routes');
-var sender = require('./send')(db);
-var jobs = require('./jobs')(sender);
+var middleware = require(__dirname + '/middleware');
+var routes = require(__dirname + '/routes');
+var sender = require(__dirname + '/send')(db);
+var jobs = require(__dirname + '/jobs')(sender);
 
 // EXPRESS CONFIG
+app.use(middleware.security);
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.json());
 
@@ -34,10 +37,19 @@ if (process.env.NODE_ENV !== 'production') {
     require('longjohn');
 }
 
-// start server
-var server = https.createServer(config,app).listen(443, function (){
-    var host = server.address().address;
-    var port = server.address().port;
+// START SERVERS
+// http
+var serverHTTP = http.createServer(app).listen(8080, function (){
+    var host = serverHTTP.address().address;
+    var port = serverHTTP.address().port;
+
+    console.log('Listening on ' + host + ':' + port);
+});
+
+// https
+var serverHTTPS = https.createServer(config,app).listen(443, function (){
+    var host = serverHTTPS.address().address;
+    var port = serverHTTPS.address().port;
 
     console.log('Listening on ' + host + ':' + port);
 });
