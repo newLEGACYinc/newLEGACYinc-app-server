@@ -13,6 +13,7 @@ var sender = require('./send')(db);
 var jobs = require('./jobs')(sender);
 
 // EXPRESS CONFIG
+app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.json());
 
 // EXPRESS ROUTING
