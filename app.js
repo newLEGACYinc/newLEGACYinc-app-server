@@ -30,7 +30,9 @@ var config = {
 };
 
 // logging
-require('longjohn');
+if (process.env.NODE_ENV !== 'production') {
+    require('longjohn');
+}
 
 // start server
 var server = https.createServer(config,app).listen(443, function (){
