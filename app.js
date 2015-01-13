@@ -19,6 +19,7 @@ app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.json());
 
 // EXPRESS ROUTING
+app.get('/', routes.index);
 app.use('/data', routes.data);
 app.put('/register', routes.register(db));
 app.post('/message', routes.sendMessage(sender));

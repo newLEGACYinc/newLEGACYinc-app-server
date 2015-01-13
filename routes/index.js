@@ -6,6 +6,9 @@ module.exports = (function(){
 
 	return {
 		data: data,
+		index : function(req, res){
+			res.redirect('https://github.com/scowalt/newLEGACYinc-app-server');
+		},
 		register : register,
 		sendMessage : sendMessage,
 		settings: settings
