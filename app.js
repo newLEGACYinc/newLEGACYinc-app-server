@@ -4,7 +4,6 @@ var app = express();
 var fs = require('fs');
 var https = require('https');
 var bodyParser = require('body-parser');
-var moment = require('moment');
 
 // MODULE IMPORTS
 var db = require('./db')();
