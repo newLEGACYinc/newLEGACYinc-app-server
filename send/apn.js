@@ -7,7 +7,7 @@ module.exports = function(db){
 		'key': process.env.APN_KEY
 	});
 
-	function send(title, message, data, key){
+	function send(title, message, key){
 		db.getRegistrationIds('APNs', key, function(error, ids){
 			if (error){
 				console.log(error);

@@ -56,7 +56,7 @@ module.exports = function(sender){
 		}
 		var title = 'New YouTube video!';
 		var message = info.snippet.title;
-		sender.send(title, message, {'videoID': info.id.videoId}, KEY);
+		sender.send(title, message, KEY);
 	}
 
 	function job(){

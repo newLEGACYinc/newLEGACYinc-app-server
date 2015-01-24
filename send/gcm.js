@@ -5,9 +5,9 @@ module.exports = function(db){
 	// setup
 	var sender = new gcm.Sender(process.env.GCM_API_KEY);
 
-	function send(title, messageText, data, key){
+	function send(title, messageText, key){
 		// construct message
-		var message = constructMessage(title, messageText, data, key);
+		var message = constructMessage(title, messageText, key);
 
 		// get all of the registration ids from the database
 		db.getRegistrationIds('GCM', key, function(err, ids){
@@ -39,7 +39,7 @@ module.exports = function(db){
 		});
 	}
 
-	function constructMessage(title, messageText, data, key){
+	function constructMessage(title, messageText, key){
 		var message = new gcm.Message();
 		message.addData('message', messageText);
 		message.addData('title', title);
@@ -47,7 +47,6 @@ module.exports = function(db){
 		message.collapseKey = key;
 		message.delayWhileIdle = false; // notify even when phone is idle
 		message.timeToLive = 30 * 60; // 30 minutes to hold and retry before timing out
-		message.addDataWithObject(data);
 		return message;
 	}
 
