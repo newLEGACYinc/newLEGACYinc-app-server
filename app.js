@@ -35,9 +35,9 @@ var config = {
 };
 
 // logging
-if (process.env.NODE_ENV !== 'production') {
+//if (process.env.NODE_ENV !== 'production') {
     require('longjohn');
-}
+//}
 
 // START SERVERS
 // http
