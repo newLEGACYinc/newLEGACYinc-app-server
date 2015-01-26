@@ -18,11 +18,16 @@ module.exports = function(sender){
 			} else if (response.statusCode != 200){
 				return callback(response.statusCode);
 			} else {
-				body = JSON.parse(body);
-				if (body['is_live'] === "1") {
-					return callback(false, body);
-				} else {
-					return callback(false, false);
+				try {
+					body = JSON.parse(body);
+					if (body['is_live'] === "1") {
+						return callback(false, body);
+					} else {
+						return callback(false, false);
+					}
+				} catch (e){
+					console.log('Failed to parse hitbox api message');
+					return callback(e);
 				}
 			}
 		});
@@ -75,6 +80,7 @@ module.exports = function(sender){
 						}
 					}
 				} catch(e){
+					console.log("Error finding newLEGACYinc in media object (hitbox)");
 					return callback(e);
 				}
 			} else if (error){
