@@ -13,6 +13,7 @@
 ## General
 
   - `ANNOUNCE_PASSWORD` - Password for sending messages through server
+  - `HTTP_PORT`
   - `NODE_ENV` - Should be `production` for deployment
   - `SSL_CERT` - Relative path to SSL certificate (`*.crt`) file
   - `SSL_KEY` - Relative path to SSL certificate key (`*.key`) file
