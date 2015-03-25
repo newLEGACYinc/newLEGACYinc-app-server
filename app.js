@@ -30,9 +30,9 @@ app.put('/settings', routes.settings(db).update);
 app.get('/settings', routes.settings(db).get);
 
 // logging
-//if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     require('longjohn');
-//}
+}
 
 // START SERVERS
 // http
