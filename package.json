@@ -4,7 +4,7 @@
   "description": "Server-side application for the newLEGACYinc app",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt travis"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "body-parser": "^1.9.3",
     "cron": "^1.0.5",
     "express": "^4.10.x",
+    "grunt": "^0.4.5",
     "longjohn": "^0.2.4",
     "moment": "^2.8.4",
     "mysql": "^2.5.3",
