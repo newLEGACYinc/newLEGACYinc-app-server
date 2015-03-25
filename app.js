@@ -34,7 +34,7 @@ app.get('/settings', routes.settings(db).get);
 
 // START SERVERS
 // http
-var serverHTTP = http.createServer(app).listen(process.env.HTTP_PORT, function (){
+var serverHTTP = http.createServer(app).listen(process.env.PORT, function (){
     var host = serverHTTP.address().address;
     var port = serverHTTP.address().port;
 
