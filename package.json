@@ -3,9 +3,6 @@
   "version": "1.0.0b",
   "description": "Server-side application for the newLEGACYinc app",
   "main": "app.js",
-  "scripts": {
-    "test": "grunt travis"
-  },
   "engines" : { "node" : ">=0.10.3 <0.12" },
   "repository": {
     "type": "git",
