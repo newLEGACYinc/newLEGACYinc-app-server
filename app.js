@@ -3,7 +3,6 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var http = require('http');
-var https = require('https');
 var bodyParser = require('body-parser');
 
 // MODULE IMPORTS
@@ -44,6 +43,7 @@ var serverHTTP = http.createServer(app).listen(process.env.PORT, function (){
 // https
 // only use https in production
 if (process.env.NODE_ENV === 'production') {
+	var https = require('https');
 	var config = {
 		key: fs.readFileSync(__dirname + '/' + process.env.SSL_KEY),
 		cert: fs.readFileSync(__dirname + '/' + process.env.SSL_CERT),
