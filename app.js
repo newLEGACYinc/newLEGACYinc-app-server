@@ -14,7 +14,10 @@ var jobs = require(__dirname + '/jobs')(sender);
 
 // EXPRESS CONFIG
 app.disable('etag'); // more info here: http://stackoverflow.com/q/18811286/1222411
-app.use(middleware.security);
+if (process.env.NODE_ENV === 'production'){
+	// redirect http to https
+	app.use(middleware.security);
+}
 app.use(express.static(__dirname + '/static'));
 app.use(bodyParser.json());
 
