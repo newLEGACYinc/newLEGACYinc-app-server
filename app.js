@@ -27,11 +27,6 @@ app.post('/message', routes.sendMessage(sender));
 app.put('/settings', routes.settings(db).update);
 app.get('/settings', routes.settings(db).get);
 
-// logging
-//if (process.env.NODE_ENV !== 'production') {
-    require('longjohn');
-//}
-
 // START SERVERS
 // http
 var serverHTTP = http.createServer(app).listen(process.env.HTTP_PORT, function (){
