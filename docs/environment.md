@@ -6,6 +6,7 @@
     - [Apple Push Notification Service](#apns)
     - [Google Cloud Messaging](#gcm)
     - [hitbox](#hitbox)
+    - [Instagram](#instagram)
     - [Twitch](#twitch)
     - [Twitter](#twitter)
     - [YouTube](#youtube)
@@ -40,10 +41,16 @@
 
   - `HITBOX_USERNAME` - newLEGACYinc's username on hitbox (i.e. newLEGACYinc)
 
+### Instagram
+
+  - `INSTAGRAM_USER_ID` - newLEGACYinc's user ID on Instagram (i.e. 1700194644)
+  - `INSTAGRAM_CLIENT_ID`
+  - `INSTAGRAM_CLIENT_SECRET`
+
 ### Twitch
 
   - `TWITCH_CLIENT_ID`
-  - `TWITCH_USERNAME` - ewLEGACYinc's username on Twitch (i.e. newLEGACYinc)
+  - `TWITCH_USERNAME` - newLEGACYinc's username on Twitch (i.e. newLEGACYinc)
 
 ### Twitter
 

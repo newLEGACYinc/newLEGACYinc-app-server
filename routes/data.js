@@ -1,10 +1,26 @@
 var express = require('express');
 var request = require('request');
 var router = express.Router();
-var Twit = require('twit');
 
+// Instagram
+var ig = require('instagram-node').instagram();
+ig.use({
+	client_id: process.env.INSTAGRAM_CLIENT_ID,
+	client_secret: process.env.INSTAGRAM_CLIENT_SECRET
+});
+
+router.get('/instagram', function(req, res){
+	ig.user_media_recent(process.env.INSTAGRAM_USER_ID, function(err, results, remaining, limit){
+		if (err){
+			console.error(err);
+			return res.status(500).send();
+		}
+		return res.status(200).send(results[0]);
+	});
+});
 
 // twitter
+var Twit = require('twit');
 var twitter = new Twit({
 	consumer_key: process.env.TWITTER_CONSUMER_KEY,
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
