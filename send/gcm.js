@@ -29,14 +29,31 @@ module.exports = function(db){
 				sender.send(message, chunk, 4, function (err, result){
 					if (err){
 						// TODO handle errors properly
-						console.log(err);
+						console.log('error in gcm ' + err);
 						return;
 					}
-					//console.log(result);
-					// TODO iterate through results to prune invalid GCM ids
+
+					updateDatabase(chunk, result.results);
 				});
 			});
 		});
+	}
+
+	/**
+	 * Use feedback from message send of GCM to fix database
+	 * @param result
+	 */
+	function updateDatabase(deviceIds, results){
+		// iterate over the sent messages
+		for (var i = 0; i < results.length; i++){
+			// if the registration id for a device has changed
+			// (this branch will be taken on the old device id)
+			if (results[i].registration_id){
+				// remove the old registration_id from the table
+				// TODO attempt to save the old settings
+				db.removeRegistrationId(deviceIds[i]);
+			}
+		}
 	}
 
 	function constructMessage(title, messageText, key){
