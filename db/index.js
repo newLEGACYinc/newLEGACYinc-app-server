@@ -65,9 +65,32 @@ module.exports = function(){
 		})
 	}
 
+	/**
+	 * Remove row from database
+	 * @param id
+	 */
+	function removeRegistrationId(id){
+		var sql = 'DELETE from devices WHERE id = ?';
+		var inserts = [ id ];
+		pool.getConnection(function(err, connection){
+			if (err){
+				console.log(err);
+				return;
+			}
+			connection.query(sql,inserts,function(err, rows){
+				connection.release();
+				if (err){
+					console.log(err);
+					return;
+				}
+			});
+		})
+	}
+
 	return {
 		addRegistrationId: addRegistrationId,
 		getRegistrationIds: getRegistrationIds,
+		removeRegistrationId: removeRegistrationId,
 		settings: settings
 	};
 }
