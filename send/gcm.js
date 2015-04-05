@@ -50,6 +50,7 @@ module.exports = function(db){
 			// (this branch will be taken on the old device id)
 			if (results[i].registration_id){
 				// remove the old registration_id from the table
+				// TODO attempt to save the old settings
 				db.removeRegistrationId(deviceIds[i]);
 			}
 		}
