@@ -3,7 +3,6 @@
   - [General](#general)
   - [Database](#database)
   - External Services
-    - [Apple Push Notification Service](#apns)
     - [Google Cloud Messaging](#gcm)
     - [hitbox](#hitbox)
     - [Instagram](#instagram)
@@ -13,7 +12,6 @@
 
 ## General
 
-  - `ANNOUNCE_PASSWORD` - Password for sending messages through server
   - `PORT` - http listening port
   - `NODE_ENV` - Should be `production` for deployment
   - `SSL_CERT` - Relative path to SSL certificate (`*.crt`) file
@@ -27,11 +25,6 @@
   - `DB_DATABASE` - Database name
 
 ## External Services
-
-### APNs
-
-  - `APN_CERT` - Relative file location for APN certificate (`*.pem`) file
-  - `APN_KEY` - Relative file location for APN key (`*.key`) file
 
 ### GCM
 
