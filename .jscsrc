@@ -1,0 +1,10 @@
+{
+    "preset": "jquery",
+    "disallowArrowFunctions": true,
+    "disallowMixedSpacesAndTabs": true,
+    "maximumLineLength": 140,
+    "requireCamelCaseOrUpperCaseIdentifiers": false,
+    "requirePaddingNewLinesBeforeLineComments": { "allExcept": "firstAfterCurly" },
+    "validateIndentation": "\t",
+    "validateQuoteMarks": "'"
+}

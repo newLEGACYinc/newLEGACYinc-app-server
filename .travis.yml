@@ -1,0 +1,11 @@
+deploy:
+  provider: heroku
+  api_key:
+    secure: ccOydjOuWIq9+U3hK3P4T9F4kFwseUE4PvZWSlz32G5ZFCaqvUOzoLt2UxBwnNSWwUqurokqjCPmZRj2Eu+YRmLU2sp900n6jzY666LP6H2ljY/Z6QVqBfaZADcxST4JdTHEUGVXl67HmUhwuY5ss+fvKY3wbXk8sZuLRWbF5gE=
+  app: newlegacyinc-app-server-dev
+  on: development
+language: node_js
+node_js:
+- '0.10'
+install:
+- npm install

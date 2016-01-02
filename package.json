@@ -1,8 +1,12 @@
 {
   "name": "newLEGACYinc-app-server",
-  "version": "1.0.0b",
+  "version": "1.0.2",
   "description": "Server-side application for the newLEGACYinc app",
-  "main": "app.js",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "grunt travis"
+  },
   "engines": {
     "node": ">=0.10.3 <0.12"
   },
@@ -11,13 +15,12 @@
     "url": "https://github.com/scowalt/newLEGACYinc-app-server.git"
   },
   "author": "scowalt",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/scowalt/newLEGACYinc-app-server/issues"
   },
   "homepage": "https://github.com/scowalt/newLEGACYinc-app-server",
   "dependencies": {
-    "apn": "^1.6.2",
     "body-parser": "^1.9.3",
     "cron": "^1.0.5",
     "express": "^4.10.x",
@@ -29,5 +32,21 @@
     "node-gcm": "^0.9.12",
     "request": "^2.51.0",
     "twit": "^1.1.19"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.4",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-coveralls": "^1.0.0",
+    "grunt-jscs": "^2.3.0",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-shell": "^1.1.2",
+    "istanbul": "^0.4.1",
+    "mitm": "^1.2.0",
+    "mocha": "^2.3.4",
+    "proxyquire": "^1.7.3",
+    "should": "^7.1.1",
+    "should-sinon": "0.0.3",
+    "sinon": "^1.17.2"
   }
 }
