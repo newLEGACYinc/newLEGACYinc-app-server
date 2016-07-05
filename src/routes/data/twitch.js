@@ -9,7 +9,7 @@ module.exports = function() {
 	var twitchClient = new TwitchClient( twitchAccount );
 
 	return function twitchDataGet( req, res ) {
-		client.channels( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
+		twitchClient.channels( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
 			if ( err ) {
 				console.error( err );
 				res.status( 500 ).send();
