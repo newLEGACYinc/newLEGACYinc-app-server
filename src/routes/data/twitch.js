@@ -14,7 +14,7 @@ module.exports = function() {
 				console.error( err );
 				res.status( 500 ).send();
 			} else {
-				res.status( 200 ).send( res );
+				res.status( 200 ).send( res.body );
 			}
 		} );
 	};
