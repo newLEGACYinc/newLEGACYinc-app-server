@@ -3,6 +3,7 @@
     "disallowArrowFunctions": true,
     "disallowMixedSpacesAndTabs": true,
     "maximumLineLength": 140,
+    "requireCapitalizedComments": false,
     "requireCamelCaseOrUpperCaseIdentifiers": false,
     "requirePaddingNewLinesBeforeLineComments": { "allExcept": "firstAfterCurly" },
     "validateIndentation": "\t",

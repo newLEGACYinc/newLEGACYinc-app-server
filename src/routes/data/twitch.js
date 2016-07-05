@@ -8,14 +8,30 @@ module.exports = function() {
 
 	var twitchClient = new TwitchClient( twitchAccount );
 
-	return function twitchDataGet( req, res ) {
-		twitchClient.channels( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
+	function isLive( callback ) {
+		twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
+			if ( err ) {
+				console.error( err );
+				callback( err );
+			} else {
+				callback( null, response.stream );
+			}
+		} );
+	}
+
+	function twitchDataGet( req, res ) {
+		twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
 			if ( err ) {
 				console.error( err );
 				res.status( 500 ).send();
 			} else {
-				res.status( 200 ).send( res.body );
+				res.status( 200 ).send( response );
 			}
 		} );
+	}
+
+	return {
+		isLive: isLive,
+		route: twitchDataGet
 	};
 };

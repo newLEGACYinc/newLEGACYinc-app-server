@@ -8,7 +8,7 @@ module.exports = function() {
 	var youTube = require( __dirname + '/youTube' )();
 
 	router.get( '/instagram', instagram );
-	router.get( '/twitch', twitch );
+	router.get( '/twitch', twitch.route );
 	router.get( '/twitter', twitter );
 	router.get( '/youTube', youTube );
 
