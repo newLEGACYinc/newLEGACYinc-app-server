@@ -24,7 +24,7 @@ app.use( bodyParser.json() );
 
 // EXPRESS ROUTING
 app.get( '/', routes.index );
-app.use( '/data', routes.data );
+app.use( '/data', routes.data() );
 app.put( '/register', routes.register( db ) );
 app.put( '/settings', routes.settings( db ).update );
 app.get( '/settings', routes.settings( db ).get );

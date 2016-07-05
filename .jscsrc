@@ -6,5 +6,6 @@
     "requireCamelCaseOrUpperCaseIdentifiers": false,
     "requirePaddingNewLinesBeforeLineComments": { "allExcept": "firstAfterCurly" },
     "validateIndentation": "\t",
+    "validateLineBreaks": false,
     "validateQuoteMarks": "'"
 }

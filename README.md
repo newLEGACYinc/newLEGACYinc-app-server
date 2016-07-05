@@ -9,4 +9,8 @@ Backend for the newLEGACYinc app.
 
 Read the files in `docs` for more information
 
-- `npm install -g grunt-cli`
+- `npm install -g grunt-cli istanbul`
+
+###Testing
+
+- `grunt test`
