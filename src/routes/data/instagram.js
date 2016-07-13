@@ -1,10 +1,7 @@
 module.exports = function() {
 	// Instagram
 	var ig = require( 'instagram-node' ).instagram();
-	ig.use( {
-		client_id: process.env.INSTAGRAM_CLIENT_ID,
-		client_secret: process.env.INSTAGRAM_CLIENT_SECRET
-	} );
+	ig.use( { access_token: process.env.INSTAGRAM_ACCESS_TOKEN } );
 
 	return function instagramDataGet( req, res ) {
 		ig.user_media_recent( process.env.INSTAGRAM_USER_ID, function( err, results, remaining, limit ) {

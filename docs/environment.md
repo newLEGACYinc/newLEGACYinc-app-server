@@ -37,8 +37,7 @@
 ### Instagram
 
   - `INSTAGRAM_USER_ID` - newLEGACYinc's user ID on Instagram (i.e. 1700194644)
-  - `INSTAGRAM_CLIENT_ID`
-  - `INSTAGRAM_CLIENT_SECRET`
+  - `INSTAGRAM_ACCESS_TOKEN` - Generated using [this method](http://stackoverflow.com/questions/16496511/how-to-get-an-instagram-access-token)
 
 ### Twitch
 
