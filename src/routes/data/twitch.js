@@ -30,8 +30,5 @@ module.exports = function() {
 		} );
 	}
 
-	return {
-		isLive: isLive,
-		route: twitchDataGet
-	};
+	return twitchDataGet;
 };
