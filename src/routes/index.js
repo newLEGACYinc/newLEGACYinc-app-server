@@ -1,7 +1,7 @@
-module.exports = ( function() {
-	var data = require( __dirname + '/data' );
-	var register = require( __dirname + '/register' );
-	var settings = require( __dirname + '/settings' );
+module.exports = function( common, db ) {
+	var data = require( __dirname + '/data' )( common );
+	var register = require( __dirname + '/register' )( db );
+	var settings = require( __dirname + '/settings' )( db );
 
 	return {
 		data: data,
@@ -11,4 +11,4 @@ module.exports = ( function() {
 		register: register,
 		settings: settings
 	};
-} )();
+};

@@ -1,23 +1,15 @@
-module.exports = function( sender ) {
+module.exports = function( common, sender ) {
 
 	// Module imports
 	var moment = require( 'moment' );
 	var request = require( 'request' );
-	var TwitchClient = require( 'node-twitchtv' );
 
 	// Private variables
 	var KEY = 'twitch';
 	var online = false;
 
-	var twitchAccount = {
-		client_id: process.env.TWITCH_CLIENT_ID,
-		scope: 'channel_read'
-	};
-
-	var twitchClient = new TwitchClient( twitchAccount );
-
 	function isLive( callback ) {
-		twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
+		common.twitch.getProfileInfo( function( err, response ) {
 			if ( err ) {
 				console.error( err );
 				callback( err );

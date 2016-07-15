@@ -3,7 +3,7 @@ var assert = require( 'assert' );
 
 describe( 'Middleware', function() {
 	describe( 'security', function() {
-		var middleware = require( '../../src/middleware' );
+		var middleware = require( '../../src/middleware' )();
 		var security = middleware.security;
 
 		it( 'should call next() when req.secure is true', function( done ) {

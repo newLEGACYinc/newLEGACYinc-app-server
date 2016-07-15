@@ -1,11 +1,11 @@
-module.exports = function( sender ) {
+module.exports = function( common, sender ) {
 
 	// Library imports
 	var CronJob = require( 'cron' ).CronJob;
 
 	// Module imports
 	var hitbox = require( __dirname + '/hitbox' )( sender );
-	var twitch = require( __dirname + '/twitch' )( sender );
+	var twitch = require( __dirname + '/twitch' )( common, sender );
 	var youTube = require( __dirname + '/youTube' )( sender );
 
 	// Each job function expects a callback
