@@ -1,5 +1,4 @@
-module.exports = function( sender ) {
-
+module.exports = function( common, sender ) {
 	// Module imports
 	var moment = require( 'moment' );
 	var request = require( 'request' );
@@ -8,29 +7,21 @@ module.exports = function( sender ) {
 	var KEY = 'twitch';
 	var online = false;
 
+	// callback(streamInfo) if the stream is Live
+	// callback(null) if the stream is offline
 	function isLive( callback ) {
-		var options = {
-			url: 'https://api.twitch.tv/kraken/streams/' + process.env.TWITCH_USERNAME,
-			headers: {
-				'Client-ID': process.env.TWITCH_CLIENT_ID,
-				'Accept': 'application/vnd.twitchtv.v2+json'
-			}
-		};
-		request( options, function( error, response, body ) {
-			if ( !error && response.statusCode === 200 ) {
-				body = JSON.parse( body );
-				var stream = body.stream;
-				callback( false, stream );
+		common.twitch.getProfileInfo( function( err, response ) {
+			if ( err ) {
+				// we weren't able to get our profile info from the network
+				// use our previous value for the stream status
+				callback( online );
 			} else {
-				console.error( error );
-				if ( response ) {
-					console.error( response.statusCode );
-				}
-				callback( error );
+				callback( response.stream );
 			}
 		} );
 	}
 
+	// notify users that about the stream status
 	function notify( info, callback ) {
 		var title = 'Live on Twitch!';
 		var message = info.channel.status;
@@ -38,21 +29,12 @@ module.exports = function( sender ) {
 	}
 
 	function job( callback ) {
-		isLive( function( error, info ) {
-			if ( error ) {
-				console.error( error );
-				callback( error );
-			} else if ( info ) {
-				if ( !online ) {
-					online = true;
-					notify( info, callback );
-				} else {
-					// Do nothing
-					callback();
-				}
+		isLive( function( info ) {
+			var previouslyOnline = online;
+			online = info;
+			if ( online && !previouslyOnline ) {
+				notify( info, callback );
 			} else {
-				// No error or stream info, stream is offline
-				online = false;
 				callback();
 			}
 		} );

@@ -37,8 +37,7 @@
 ### Instagram
 
   - `INSTAGRAM_USER_ID` - newLEGACYinc's user ID on Instagram (i.e. 1700194644)
-  - `INSTAGRAM_CLIENT_ID`
-  - `INSTAGRAM_CLIENT_SECRET`
+  - `INSTAGRAM_ACCESS_TOKEN` - Generated using https://www.instagram.com/oauth/authorize/?client_id=[CLIENT_ID]&redirect_uri=http://localhost&response_type=token&scope=public_content
 
 ### Twitch
 

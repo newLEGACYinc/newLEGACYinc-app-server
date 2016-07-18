@@ -6,11 +6,12 @@ var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
 
 // MODULE IMPORTS
-var db = require( './db' )();
-var middleware = require( __dirname + '/middleware' );
-var routes = require( __dirname + '/routes' );
+var common = require( __dirname + '/common' )();
+var db = require( __dirname + '/db' )();
+var middleware = require( __dirname + '/middleware' )();
+var routes = require( __dirname + '/routes' )( common, db );
 var sender = require( __dirname + '/send' )( db );
-var jobs = require( __dirname + '/jobs' )( sender );
+var jobs = require( __dirname + '/jobs' )( common, sender );
 
 // EXPRESS CONFIG
 app.disable( 'etag' ); // more info here: http://stackoverflow.com/q/18811286/1222411
@@ -25,9 +26,9 @@ app.use( bodyParser.json() );
 // EXPRESS ROUTING
 app.get( '/', routes.index );
 app.use( '/data', routes.data );
-app.put( '/register', routes.register( db ) );
-app.put( '/settings', routes.settings( db ).update );
-app.get( '/settings', routes.settings( db ).get );
+app.put( '/register', routes.register );
+app.put( '/settings', routes.settings.update );
+app.get( '/settings', routes.settings.get );
 
 // Logging
 if ( process.env.NODE_ENV !== 'production' ) {
