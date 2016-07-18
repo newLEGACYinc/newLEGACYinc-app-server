@@ -1,5 +1,4 @@
 module.exports = function( common, sender ) {
-
 	// Module imports
 	var moment = require( 'moment' );
 	var request = require( 'request' );
@@ -8,17 +7,21 @@ module.exports = function( common, sender ) {
 	var KEY = 'twitch';
 	var online = false;
 
+	// callback(streamInfo) if the stream is Live
+	// callback(null) if the stream is offline
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, response ) {
 			if ( err ) {
-				console.error( err );
-				callback( err );
+				// we weren't able to get our profile info from the network
+				// use our previous value for the stream status
+				callback( online );
 			} else {
-				callback( null, response.stream );
+				callback( response.stream );
 			}
 		} );
 	}
 
+	// notify users that about the stream status
 	function notify( info, callback ) {
 		var title = 'Live on Twitch!';
 		var message = info.channel.status;
@@ -26,21 +29,12 @@ module.exports = function( common, sender ) {
 	}
 
 	function job( callback ) {
-		isLive( function( error, info ) {
-			if ( error ) {
-				console.error( error );
-				callback( error );
-			} else if ( info ) {
-				if ( !online ) {
-					online = true;
-					notify( info, callback );
-				} else {
-					// Do nothing
-					callback();
-				}
+		isLive( function( info ) {
+			var previouslyOnline = online;
+			online = info;
+			if ( online && !previouslyOnline ) {
+				notify( info, callback );
 			} else {
-				// No error or stream info, stream is offline
-				online = false;
 				callback();
 			}
 		} );
