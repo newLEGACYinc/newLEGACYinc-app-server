@@ -26,6 +26,7 @@
     "express": "^4.10.x",
     "grunt": "^0.4.5",
     "instagram-node": "^0.5.6",
+    "log-timestamp": "^0.1.2",
     "longjohn": "^0.2.4",
     "moment": "^2.8.4",
     "mysql": "^2.5.3",
