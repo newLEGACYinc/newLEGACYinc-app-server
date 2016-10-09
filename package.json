@@ -30,7 +30,6 @@
     "moment": "^2.8.4",
     "mysql": "^2.5.3",
     "node-gcm": "^0.9.12",
-    "node-twitchtv": "0.0.4",
     "request": "^2.51.0",
     "twit": "^1.1.19",
     "twitch-sdk": "^0.3.1"

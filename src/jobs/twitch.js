@@ -14,11 +14,8 @@ module.exports = function( common, sender ) {
 			if ( err ) {
 				// we weren't able to get our profile info from the network
 				// use our previous value for the stream status
-				// console.error( err );
 				callback( online );
 			} else {
-				// console.log( 'twitch is live response \\/\\/\\/\\/\\/' );
-				// console.log( response );
 				callback( stream );
 			}
 		} );
@@ -39,8 +36,6 @@ module.exports = function( common, sender ) {
 			if ( online && !previouslyOnline ) {
 				notify( info, callback );
 			} else {
-				console.log( 'previously online = ' + previouslyOnline );
-				console.log( 'online = ' + online );
 				callback();
 			}
 		} );
