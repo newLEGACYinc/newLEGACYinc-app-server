@@ -25,7 +25,7 @@ module.exports = function() {
 			console.log( 'twitch api callback' );
 			console.log( error );
 			console.log( list );
-			callback( list );
+			callback( list.streams[ 0 ] );
 		} );
 
 		// twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
