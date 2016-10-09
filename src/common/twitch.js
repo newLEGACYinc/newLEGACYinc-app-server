@@ -11,7 +11,7 @@ module.exports = function() {
 		scope: 'channel_read'
 	};
 
-	console.log( 'client id = ' + process.env.TWITCH_CLIENT_ID );
+	// console.log( 'client id = ' + process.env.TWITCH_CLIENT_ID );
 
 	// var twitchClient = new TwitchClient( twitchAccount );
 	TwitchClient.init( twitchAccount, function( error, status ) {
@@ -22,8 +22,8 @@ module.exports = function() {
 
 	function getProfileInfo( callback ) {
 		TwitchClient.api( { method: 'streams', params: { channel: process.env.TWITCH_USERNAME } }, function( error, list ) {
-			console.log( 'twitch api callback' );
-			console.log( list.streams[ 0 ] );
+			// console.log( 'twitch api callback' );
+			// console.log( list.streams[ 0 ] );
 			callback( error, list.streams[ 0 ] );
 		} );
 
