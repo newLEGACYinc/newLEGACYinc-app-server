@@ -17,6 +17,8 @@ module.exports = function( common, sender ) {
 				console.error( err );
 				callback( online );
 			} else {
+				console.log( 'twitch is live response \\/\\/\\/\\/\\/' );
+				console.log( response );
 				callback( response.stream );
 			}
 		} );
