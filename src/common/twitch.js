@@ -1,8 +1,13 @@
 module.exports = function() {
 	var TwitchClient = require( 'twitch-sdk' );
 
+	// var twitchAccount = {
+	// 	client_id: process.env.TWITCH_CLIENT_ID,
+	// 	scope: 'channel_read'
+	// };
+
 	var twitchAccount = {
-		client_id: process.env.TWITCH_CLIENT_ID,
+		clientId: process.env.TWITCH_CLIENT_ID,
 		scope: 'channel_read'
 	};
 
