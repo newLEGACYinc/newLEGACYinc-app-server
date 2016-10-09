@@ -15,16 +15,16 @@ module.exports = function() {
 
 	// var twitchClient = new TwitchClient( twitchAccount );
 	TwitchClient.init( twitchAccount, function( error, status ) {
-		console.log( 'twitch init' );
-		console.log( error );
-		console.log( status );
+		if ( error ) {
+			console.error( error );
+		}
 	} );
 
 	function getProfileInfo( callback ) {
 		TwitchClient.api( { method: 'streams', params: { channel: process.env.TWITCH_USERNAME } }, function( error, list ) {
 			console.log( 'twitch api callback' );
 			console.log( error );
-			console.log( list );
+			console.log( list.streams[ 0 ] );
 			callback( list.streams[ 0 ] );
 		} );
 
