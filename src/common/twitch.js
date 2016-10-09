@@ -6,6 +6,8 @@ module.exports = function() {
 		scope: 'channel_read'
 	};
 
+	console.log( 'client id = ' + process.env.TWITCH_CLIENT_ID );
+
 	var twitchClient = new TwitchClient( twitchAccount );
 
 	function getProfileInfo( callback ) {
