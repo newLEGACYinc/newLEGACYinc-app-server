@@ -29,12 +29,15 @@ module.exports = function( common, sender ) {
 	}
 
 	function job( callback ) {
+		console.log( 'Twitch job function' );
 		isLive( function( info ) {
 			var previouslyOnline = online;
 			online = info;
 			if ( online && !previouslyOnline ) {
 				notify( info, callback );
 			} else {
+				console.log( `previously online = ${previouslyOnline}` );
+				console.log( `online = ${online}` );
 				callback();
 			}
 		} );
