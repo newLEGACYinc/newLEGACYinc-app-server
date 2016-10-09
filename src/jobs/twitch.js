@@ -29,7 +29,6 @@ module.exports = function( common, sender ) {
 	}
 
 	function job( callback ) {
-		console.log( 'Twitch job function' );
 		isLive( function( info ) {
 			var previouslyOnline = online;
 			online = info;
