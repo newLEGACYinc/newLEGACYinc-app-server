@@ -10,13 +10,13 @@ module.exports = function( common, sender ) {
 	// callback(streamInfo) if the stream is Live
 	// callback(null) if the stream is offline
 	function isLive( callback ) {
-		common.twitch.getProfileInfo( function( err, response ) {
+		common.twitch.getProfileInfo( function( err, stream ) {
 			if ( err ) {
 				// we weren't able to get our profile info from the network
 				// use our previous value for the stream status
 				callback( online );
 			} else {
-				callback( response.stream );
+				callback( stream );
 			}
 		} );
 	}
