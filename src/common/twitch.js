@@ -1,16 +1,20 @@
 module.exports = function() {
-	var TwitchClient = require( 'node-twitchtv' );
+	var TwitchClient = require( 'twitch-sdk' );
 
 	var twitchAccount = {
-		client_id: process.env.TWITCH_CLIENT_ID,
+		clientId: process.env.TWITCH_CLIENT_ID,
 		scope: 'channel_read'
 	};
 
-	var twitchClient = new TwitchClient( twitchAccount );
+	TwitchClient.init( twitchAccount, function( error, status ) {
+		if ( error ) {
+			console.error( error );
+		}
+	} );
 
 	function getProfileInfo( callback ) {
-		twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
-			callback( err, response );
+		TwitchClient.api( { method: 'streams', params: { channel: process.env.TWITCH_USERNAME } }, function( error, list ) {
+			callback( error, list.streams[ 0 ] );
 		} );
 	}
 
