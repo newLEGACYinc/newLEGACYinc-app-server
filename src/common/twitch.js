@@ -23,9 +23,8 @@ module.exports = function() {
 	function getProfileInfo( callback ) {
 		TwitchClient.api( { method: 'streams', params: { channel: process.env.TWITCH_USERNAME } }, function( error, list ) {
 			console.log( 'twitch api callback' );
-			console.log( error );
 			console.log( list.streams[ 0 ] );
-			callback( list.streams[ 0 ] );
+			callback( error, list.streams[ 0 ] );
 		} );
 
 		// twitchClient.streams( { channel: process.env.TWITCH_USERNAME }, function( err, response ) {
