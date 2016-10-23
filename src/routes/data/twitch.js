@@ -1,8 +1,9 @@
 module.exports = function( common ) {
 	return function twitchDataGet( req, res ) {
 		common.twitch.getProfileInfo( function( err, profileInfo ) {
-			// Explicitly allow any chrome extension to access this resource
-			res.header( 'Access-Control-Allow-Origin', 'chrome-extension://*' );
+			// Explicitly allow any client to access this resource.
+			// (Necessary for client-side applications like the chrome extension)
+			res.header( 'Access-Control-Allow-Origin', '*' );
 
 			if ( err ) {
 				console.error( err );
