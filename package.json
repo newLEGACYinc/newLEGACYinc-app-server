@@ -8,7 +8,7 @@
     "test": "grunt travis"
   },
   "engines": {
-    "node": ">=0.10.3 <0.12"
+    "node": ">=6 <7"
   },
   "repository": {
     "type": "git",
