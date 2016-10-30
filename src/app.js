@@ -37,27 +37,9 @@ if ( process.env.NODE_ENV !== 'production' ) {
 }
 
 // START SERVERS
-// http
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
 	var host = serverHTTP.address().address;
 	var port = serverHTTP.address().port;
 
 	console.log( 'Listening on ' + host + ':' + port );
 } );
-
-// Https
-// only use https in production
-if ( process.env.NODE_ENV === 'production' ) {
-	var https = require( 'https' );
-	var config = {
-		key: fs.readFileSync( __dirname + '/' + process.env.SSL_KEY ),
-		cert: fs.readFileSync( __dirname + '/' + process.env.SSL_CERT ),
-		passphrase: ''
-	};
-	var serverHTTPS = https.createServer( config, app ).listen( 443, function() {
-		var host = serverHTTPS.address().address;
-		var port = serverHTTPS.address().port;
-
-		console.log( 'Listening on ' + host + ':' + port );
-	} );
-}
