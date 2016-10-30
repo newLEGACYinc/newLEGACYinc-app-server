@@ -9,18 +9,12 @@ require( 'log-timestamp' );
 // MODULE IMPORTS
 var common = require( __dirname + '/common' )();
 var db = require( __dirname + '/db' )();
-var middleware = require( __dirname + '/middleware' )();
 var routes = require( __dirname + '/routes' )( common, db );
 var sender = require( __dirname + '/send' )( db );
 var jobs = require( __dirname + '/jobs' )( common, sender );
 
 // EXPRESS CONFIG
 app.disable( 'etag' ); // more info here: http://stackoverflow.com/q/18811286/1222411
-if ( process.env.NODE_ENV === 'production' ) {
-
-	// Redirect http to https
-	app.use( middleware.security );
-}
 app.use( express.static( __dirname + '/static' ) );
 app.use( bodyParser.json() );
 
