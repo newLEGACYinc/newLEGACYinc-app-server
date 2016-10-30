@@ -15,6 +15,7 @@ var sender = require( __dirname + '/send' )( db );
 var jobs = require( __dirname + '/jobs' )( common, sender );
 
 // EXPRESS CONFIG
+app.set( 'port', process.env.PORT || 3000 );
 app.disable( 'etag' ); // more info here: http://stackoverflow.com/q/18811286/1222411
 if ( process.env.NODE_ENV === 'production' ) {
 
@@ -36,28 +37,10 @@ if ( process.env.NODE_ENV !== 'production' ) {
 	require( 'longjohn' );
 }
 
-// START SERVERS
-// http
+// START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
 	var host = serverHTTP.address().address;
 	var port = serverHTTP.address().port;
 
 	console.log( 'Listening on ' + host + ':' + port );
 } );
-
-// Https
-// only use https in production
-if ( process.env.NODE_ENV === 'production' ) {
-	var https = require( 'https' );
-	var config = {
-		key: fs.readFileSync( __dirname + '/' + process.env.SSL_KEY ),
-		cert: fs.readFileSync( __dirname + '/' + process.env.SSL_CERT ),
-		passphrase: ''
-	};
-	var serverHTTPS = https.createServer( config, app ).listen( 443, function() {
-		var host = serverHTTPS.address().address;
-		var port = serverHTTPS.address().port;
-
-		console.log( 'Listening on ' + host + ':' + port );
-	} );
-}
