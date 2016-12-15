@@ -1,39 +1,28 @@
 // http://stackoverflow.com/a/16800702/1222411
 module.exports = function() {
+	// Import libraries
+	var mongoose = require( 'mongoose' );
+	mongoose.connect( proces.env.DB_URL, { config: { autoIndex: false } } );
 
-	// Import mysql library
-	var mysql = require( 'mysql' );
+	var Device = mongoose.model( 'Device', {
+		// Indexes
+		id: { type: String, required: true, unique: true, index: true },
+		type: { type: [ 'GCM' ], required: true }, // other types may be available later
 
-	// Initialize connection pool
-	var pool = mysql.createPool( {
-		'host': process.env.DB_HOST,
-		'user': process.env.DB_USER,
-		'password': process.env.DB_PASS,
-		'database': process.env.DB_DATABASE,
-		'connectionLimit': 5,
-		'supportBigNumbers': true
+		// Notification settings
+		twitch: { type: Boolean, default: true },
+		hitbox: { type: Boolean, default: true },
+		youTube: { type: Boolean, default: true }
 	} );
 
 	// Import modules
-	var settings = require( __dirname + '/settings' )( pool );
+	var settings = require( __dirname + '/settings' )();
 
 	var addRegistrationId = function( id, type, callback ) {
-		var sql = 'INSERT INTO devices (id, type) VALUES (?, ?)';
-		var inserts = [ id, type ];
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				callback( err );
-				return;
-			}
-			connection.query( sql, inserts, function( err, result ) {
-				connection.release();
-				if ( err ) {
-					callback( err, result );
-					return;
-				}
-				callback( false, result );
-			} );
+		var newDevice = new Device( { id: id, type: type } );
+		newDevice.save( function( error, device ) {
+			// There might be an error (for example, for a duplicate entry). For now, that's okay.
+			callback( false, device );
 		} );
 	};
 
