@@ -36,7 +36,7 @@ module.exports = function() {
 		if ( key ) {
 			queryConditions[ key ] = true;
 		}
-		Device.find( queryConditions ).select( 'id' ).exec( function( error, devices ) {
+		Device.find( queryConditions ).select( 'id -_id' ).exec( function( error, devices ) {
 			if ( error ) {
 				console.log( error );
 				callback( error );

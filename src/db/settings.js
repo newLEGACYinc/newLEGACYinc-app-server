@@ -1,6 +1,6 @@
 module.exports = function( mongoose, Device ) {
 	function get( id, type, callback ) {
-		Device.findOne( { id: id, type: type } ).select( 'youTube hitbox twitch' ).exec( function( error, device ) {
+		Device.findOne( { id: id, type: type } ).select( 'youTube hitbox twitch -_id' ).exec( function( error, device ) {
 			if ( error ) {
 				console.error( error );
 				callback( error );
