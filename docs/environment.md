@@ -19,7 +19,7 @@
 
 ## Database
 
-  - `DB_URL`
+  - `MONGODB_URI`
 
 ## External Services
 

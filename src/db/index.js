@@ -16,42 +16,33 @@ module.exports = function() {
 	} );
 
 	// Import modules
-	var settings = require( __dirname + '/settings' )();
+	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
 		var newDevice = new Device( { id: id, type: type } );
 		newDevice.save( function( error, device ) {
-			// There might be an error (for example, for a duplicate entry). For now, that's okay.
-			callback( false, device );
+			if ( !error || error.code === 11000 /* duplicate */ ) {
+				callback( false, device );
+			} else {
+				callback( error );
+			}
 		} );
 	};
 
 	var getRegistrationIds = function( type, key, callback ) {
-		var sql = 'SELECT (id) from devices WHERE type = ?';
-		var inserts = [ type ];
+		var queryConditions = {
+			type:type
+		};
 		if ( key ) {
-			sql += ' AND ?? = 1';
-			inserts.push( key );
+			queryConditions[ key ] = true;
 		}
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				callback( err );
-				return;
+		Device.find( queryConditions ).select( 'id' ).exec( function( error, devices ) {
+			if ( error ) {
+				console.log( error );
+				callback( error );
+			} else {
+				callback( false, devices );
 			}
-			connection.query( sql, inserts, function( err, rows ) {
-				connection.release();
-				if ( err ) {
-					console.log( err );
-					callback( err );
-					return;
-				}
-				var results = [];
-				rows.forEach( function( row ) {
-					results.push( row.id );
-				} );
-				callback( false, results );
-			} );
 		} );
 	};
 
@@ -60,20 +51,12 @@ module.exports = function() {
 	 * @param id
 	 */
 	function removeRegistrationId( id ) {
-		var sql = 'DELETE from devices WHERE id = ?';
-		var inserts = [ id ];
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				return;
+		Device.findOneAndRemove( { id: id }, function( error ) {
+			if ( error ) {
+				// Since this ID has previously been confirmed to be present in
+				// the database, this operation should never error.
+				console.error( error );
 			}
-			connection.query( sql, inserts, function( err, rows ) {
-				connection.release();
-				if ( err ) {
-					console.log( err );
-					return;
-				}
-			} );
 		} );
 	}
 
