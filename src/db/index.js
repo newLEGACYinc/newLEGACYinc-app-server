@@ -2,7 +2,7 @@
 module.exports = function() {
 	// Import libraries
 	var mongoose = require( 'mongoose' );
-	mongoose.connect( process.env.DB_URL, { config: { autoIndex: false } } );
+	mongoose.connect( process.env.MONGODB_URI, { config: { autoIndex: false } } );
 
 	var Device = mongoose.model( 'Device', {
 		// Indexes
