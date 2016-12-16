@@ -4,7 +4,7 @@ module.exports = function() {
 	var mongoose = require( 'mongoose' );
 	mongoose.connect( process.env.MONGODB_URI, { config: { autoIndex: false } } );
 
-	var Device = mongoose.model( 'Device', new mongoose.Schema( {
+	var Device = mongoose.model( 'Device', {
 		// Indexes
 		id: { type: String, required: true, unique: true, index: true },
 		type: { type: [ 'GCM' ], required: true }, // other types may be available later
@@ -13,7 +13,7 @@ module.exports = function() {
 		twitch: { type: Boolean, default: true },
 		hitbox: { type: Boolean, default: true },
 		youTube: { type: Boolean, default: true }
-	}, { _id: false } ) );
+	} );
 
 	// Import modules
 	var settings = require( __dirname + '/settings' )( mongoose, Device );
