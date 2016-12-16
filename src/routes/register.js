@@ -4,8 +4,8 @@ module.exports = function( db ) {
 		var type = req.body.type;
 
 		db.addRegistrationId( id, type, function( error, results ) {
-			if ( err  ) {
-				console.log( err );
+			if ( error  ) {
+				console.log( error );
 				res.status( 500 ).send( );
 			} else {
 				res.status( 200 ).send( );
