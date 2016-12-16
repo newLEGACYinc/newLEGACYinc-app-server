@@ -12,10 +12,7 @@ except for changes in out.log
 NODE_ENV=production\
  PORT=8080\
  GCM_API_KEY=\
- DB_HOST=127.0.0.1\
- DB_USER=\
- DB_PASS=\
- DB_DATABASE=\
+ MONGODB_URI=\
  SSL_CERT=\
  SSL_KEY=\
  PASSWORD=\
