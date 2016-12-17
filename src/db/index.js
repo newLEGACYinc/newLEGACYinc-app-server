@@ -41,6 +41,10 @@ module.exports = function() {
 				console.log( error );
 				callback( error );
 			} else {
+				var ids = [];
+				devices.forEach( function( device ) {
+					ids.push( device.id );
+				} );
 				callback( false, devices );
 			}
 		} );
