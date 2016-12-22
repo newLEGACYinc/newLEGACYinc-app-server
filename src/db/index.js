@@ -8,16 +8,12 @@ module.exports = function() {
 		// Indexes
 		id: {
 			type: String,
-			required: true,
-			unique: true,
-			index: true
+			required: true
 		},
 		type: {
 			type: String,
 			enum: [ 'GCM' ], // other types may be available later
-			required: true,
-			unique: false,
-			index: true
+			required: true
 		},
 
 		// Notification settings
@@ -34,6 +30,11 @@ module.exports = function() {
 			default: true
 		}
 	} );
+
+	// Only the pair (id, type) must be unique in this database. This is necessary
+	// to allow multiple messaging services to register different devices with the
+	// same ID.
+	deviceSchema.index( { id:1, type:1 }, { unique: true } );
 	var Device = mongoose.model( 'Device', deviceSchema );
 
 	// Import modules
