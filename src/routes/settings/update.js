@@ -16,12 +16,12 @@ module.exports = function( db ) {
 			return;
 		}
 
-		db.settings.update( id, type, req.body, function( err, data ) {
+		db.settings.update( id, type, req.body, function( err ) {
 			if ( err ) {
 				console.log( err );
 				return res.status( 500 ).send( err );
 			}
-			return res.status( 200 ).send( data );
+			return res.status( 200 ).send();
 		} );
 	};
 };

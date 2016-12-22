@@ -14,6 +14,7 @@ var sender = require( __dirname + '/send' )( db );
 var jobs = require( __dirname + '/jobs' )( common, sender );
 
 // EXPRESS CONFIG
+app.set( 'port', process.env.PORT || 3000 );
 app.disable( 'etag' ); // more info here: http://stackoverflow.com/q/18811286/1222411
 app.use( express.static( __dirname + '/static' ) );
 app.use( bodyParser.json() );
@@ -30,7 +31,7 @@ if ( process.env.NODE_ENV !== 'production' ) {
 	require( 'longjohn' );
 }
 
-// START SERVERS
+// START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
 	var host = serverHTTP.address().address;
 	var port = serverHTTP.address().port;

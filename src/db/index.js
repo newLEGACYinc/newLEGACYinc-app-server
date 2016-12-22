@@ -1,68 +1,74 @@
 // http://stackoverflow.com/a/16800702/1222411
 module.exports = function() {
+	// Import libraries
+	var mongoose = require( 'mongoose' );
+	mongoose.connect( process.env.MONGODB_URI );
 
-	// Import mysql library
-	var mysql = require( 'mysql' );
+	var deviceSchema = new mongoose.Schema( {
+		// Indexes
+		id: {
+			type: String,
+			required: true
+		},
+		type: {
+			type: String,
+			enum: [ 'GCM' ], // other types may be available later
+			required: true
+		},
 
-	// Initialize connection pool
-	var pool = mysql.createPool( {
-		'host': process.env.DB_HOST,
-		'user': process.env.DB_USER,
-		'password': process.env.DB_PASS,
-		'database': process.env.DB_DATABASE,
-		'connectionLimit': 5,
-		'supportBigNumbers': true
+		// Notification settings
+		twitch: {
+			type: Boolean,
+			default: true
+		},
+		hitbox: {
+			type: Boolean,
+			default: true
+		},
+		youTube: {
+			type: Boolean,
+			default: true
+		}
 	} );
 
+	// Only the pair (id, type) must be unique in this database. This is necessary
+	// to allow multiple messaging services to register different devices with the
+	// same ID.
+	deviceSchema.index( { id:1, type:1 }, { unique: true } );
+	var Device = mongoose.model( 'Device', deviceSchema );
+
 	// Import modules
-	var settings = require( __dirname + '/settings' )( pool );
+	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
-		var sql = 'INSERT INTO devices (id, type) VALUES (?, ?)';
-		var inserts = [ id, type ];
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				callback( err );
-				return;
+		var newDevice = new Device( { id: id, type: type } );
+		newDevice.save( function( error, device ) {
+			if ( !error || error.code === 11000 /* duplicate */ ) {
+				callback( false, device );
+			} else {
+				callback( error );
 			}
-			connection.query( sql, inserts, function( err, result ) {
-				connection.release();
-				if ( err ) {
-					callback( err, result );
-					return;
-				}
-				callback( false, result );
-			} );
 		} );
 	};
 
 	var getRegistrationIds = function( type, key, callback ) {
-		var sql = 'SELECT (id) from devices WHERE type = ?';
-		var inserts = [ type ];
+		var queryConditions = {
+			type:type
+		};
 		if ( key ) {
-			sql += ' AND ?? = 1';
-			inserts.push( key );
+			queryConditions[ key ] = true;
 		}
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				callback( err );
-				return;
-			}
-			connection.query( sql, inserts, function( err, rows ) {
-				connection.release();
-				if ( err ) {
-					console.log( err );
-					callback( err );
-					return;
-				}
-				var results = [];
-				rows.forEach( function( row ) {
-					results.push( row.id );
+		Device.find( queryConditions ).select( 'id -_id' ).exec( function( error, devices ) {
+			if ( error ) {
+				console.log( error );
+				callback( error );
+			} else {
+				var ids = [];
+				devices.forEach( function( device ) {
+					ids.push( device.id );
 				} );
-				callback( false, results );
-			} );
+				callback( false, devices );
+			}
 		} );
 	};
 
@@ -71,20 +77,12 @@ module.exports = function() {
 	 * @param id
 	 */
 	function removeRegistrationId( id ) {
-		var sql = 'DELETE from devices WHERE id = ?';
-		var inserts = [ id ];
-		pool.getConnection( function( err, connection ) {
-			if ( err ) {
-				console.log( err );
-				return;
+		Device.findOneAndRemove( { id: id }, function( error ) {
+			if ( error ) {
+				// Since this ID has previously been confirmed to be present in
+				// the database, this operation should never error.
+				console.error( error );
 			}
-			connection.query( sql, inserts, function( err, rows ) {
-				connection.release();
-				if ( err ) {
-					console.log( err );
-					return;
-				}
-			} );
 		} );
 	}
 

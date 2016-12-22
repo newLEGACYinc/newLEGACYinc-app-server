@@ -19,10 +19,7 @@
 
 ## Database
 
-  - `DB_HOST` - likely `127.0.0.1`
-  - `DB_USER`
-  - `DB_PASS`
-  - `DB_DATABASE` - Database name
+  - `MONGODB_URI`
 
 ## External Services
 
