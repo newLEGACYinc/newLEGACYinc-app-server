@@ -4,7 +4,7 @@ module.exports = function() {
 	var mongoose = require( 'mongoose' );
 	mongoose.connect( process.env.MONGODB_URI, { config: { autoIndex: false } } );
 
-	var deviceSchema = new Schema( {
+	var deviceSchema = new mongoose.Schema( {
 		// Indexes
 		id: { type: String, required: true, unique: true, index: true },
 		type: { type: [ 'GCM' ], required: true }, // other types may be available later
