@@ -6,15 +6,34 @@ module.exports = function() {
 
 	var deviceSchema = new mongoose.Schema( {
 		// Indexes
-		id: { type: String, required: true, unique: true, index: true },
-		type: { type: String, enum: [ 'GCM' ], required: true }, // other types may be available later
+		id: {
+			type: String,
+			required: true,
+			unique: true,
+			index: true
+		},
+		type: {
+			type: String,
+			enum: [ 'GCM' ], // other types may be available later
+			required: true,
+			unique: false,
+			index: true
+		},
 
 		// Notification settings
-		twitch: { type: Boolean, default: true },
-		hitbox: { type: Boolean, default: true },
-		youTube: { type: Boolean, default: true }
+		twitch: {
+			type: Boolean,
+			default: true
+		},
+		hitbox: {
+			type: Boolean,
+			default: true
+		},
+		youTube: {
+			type: Boolean,
+			default: true
+		}
 	} );
-	deviceSchema.index( { id:1, type:1 }, { unique: true } );
 	var Device = mongoose.model( 'Device', deviceSchema );
 
 	// Import modules
