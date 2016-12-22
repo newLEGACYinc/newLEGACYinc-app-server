@@ -14,6 +14,7 @@ module.exports = function() {
 		hitbox: { type: Boolean, default: true },
 		youTube: { type: Boolean, default: true }
 	} );
+	deviceSchema.index( { id:1, type:1 }, { unique: true } );
 	var Device = mongoose.model( 'Device', deviceSchema );
 
 	// Import modules
