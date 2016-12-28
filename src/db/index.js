@@ -28,6 +28,14 @@ module.exports = function() {
 		youTube: {
 			type: Boolean,
 			default: true
+		},
+
+		// Acive devices are ones that have accessed the "new" server. Inactive
+		// devices are still receiving notifications from the "old" server and
+		// shouldn't receive notifications from this server.
+		active: {
+			type: Boolean,
+			default: true
 		}
 	} );
 
@@ -41,9 +49,19 @@ module.exports = function() {
 	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
-		var newDevice = new Device( { id: id, type: type } );
-		newDevice.save( function( error, device ) {
-			if ( !error || error.code === 11000 /* duplicate */ ) {
+		var query = { id: id, type: type };
+		var update = { active: true };
+		var options = {
+			// If document is found with query, update. Otherwise, create the
+			// document with the data provided in update.
+			upsert: true,
+
+			// If a document is found with query, don't update the existing
+			// values on the document (besides the ones in update)
+			setDefaultsOnInsert: false
+		};
+		Device.findOneAndUpdate( query, update, options, function( error, device ) {
+			if ( !error ) {
 				callback( false, device );
 			} else {
 				callback( error );
@@ -53,8 +71,12 @@ module.exports = function() {
 
 	var getRegistrationIds = function( type, key, callback ) {
 		var queryConditions = {
-			type:type
+			type: type,
+			active: true
 		};
+
+		// TODO It's probably safe to assert that this function will be called
+		// with a defined, valid key.
 		if ( key ) {
 			queryConditions[ key ] = true;
 		}
