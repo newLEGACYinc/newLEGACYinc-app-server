@@ -52,6 +52,8 @@ module.exports = function() {
 	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
+		console.debug( 'addRegistrationId' );
+
 		// If this device hasn't yet been added to the database,
 		var deviceInfo = { id:id, type:type };
 		Device.where( deviceInfo ).findOne( function( error, device ) {
