@@ -63,6 +63,7 @@ module.exports = function() {
 				console.error( error );
 				callback( error );
 			} else {
+				console.log( 'No error finding device in database' );
 				if ( device ) {
 					console.log( 'Device already exists in database, no further action is required' );
 					callback( );
