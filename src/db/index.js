@@ -56,7 +56,8 @@ module.exports = function() {
 
 		// If this device hasn't yet been added to the database,
 		var deviceInfo = { id:id, type:type };
-		Device.where( deviceInfo ).findOne( function( error, device ) {
+		Device.where( deviceInfo ).findOne( function findOneCallback( error, device ) {
+			console.log( 'findOneCallback' );
 			if ( error ) {
 				console.log( 'Error finding device in database' );
 				console.error( error );
