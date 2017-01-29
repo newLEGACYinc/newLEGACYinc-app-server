@@ -56,14 +56,16 @@ module.exports = function() {
 		var deviceInfo = { id:id, type:type };
 		Device.where( deviceInfo ).findOne( function( error, device ) {
 			if ( error ) {
+				console.debug( 'Error finding device in database' );
 				console.error( error );
 				callback( error );
 			} else {
 				if ( device ) {
-					// Device already exists in database, no further action is required
+					console.debug( 'Device already exists in database, no further action is required' );
 					callback( );
 				} else {
-					// Device doesn't exist in current database.
+					console.debug( 'Device doesn\'t exist in current database.' );
+
 					// Check the old database for settings for this device.
 					const selectOldDevice = 'SELECT youTube, hitbox, twitch FROM devices WHERE id=? and type=?';
 					var oldDevice = null;
@@ -81,12 +83,13 @@ module.exports = function() {
 
 					mysqlConnectionPool.getConnection( function( error, connection ) {
 						if ( error ) {
-							// Failed to get connection to old database. Ignore this error
+							console.debug( 'Failed to get connection to old database.' );
 							console.error( error );
 							insertNewDevice();
 						} else {
 							connection.query( selectOldDevice, inserts, function( error, rows ) {
 								if ( error || ( rows.length != 1 ) ) {
+									console.debug( 'Device not found in old server' );
 									console.error( error );
 									insertNewDevice();
 									connection.release();
@@ -96,6 +99,7 @@ module.exports = function() {
 
 									// Now that the device has been moved from the old to
 									// the new server, delete the entry in the old server.
+									console.debug( 'Delete the entry in the old server.' );
 									const deleteOldDevice = 'DELETE from devices where WHERE id=? and type=?';
 									connection.query( selectOldDevice, inserts, function( error ) {
 										if ( error ) {
