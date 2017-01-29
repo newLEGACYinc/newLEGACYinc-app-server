@@ -3,7 +3,7 @@ module.exports = function( db ) {
 		var id = req.body.id;
 		var type = req.body.type;
 
-		db.addRegistrationId( id, type, function( error, results ) {
+		db.addRegistrationId( id, type, function( error ) {
 			if ( error  ) {
 				console.log( error );
 				res.status( 500 ).send( );

@@ -30,6 +30,7 @@
     "longjohn": "^0.2.4",
     "moment": "^2.8.4",
     "mongoose": "^4.7.2",
+    "mysql": "^2.5.3",
     "node-gcm": "^0.9.12",
     "request": "^2.51.0",
     "twit": "^1.1.19",
