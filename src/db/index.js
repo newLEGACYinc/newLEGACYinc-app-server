@@ -52,24 +52,16 @@ module.exports = function() {
 	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
-		console.log( 'addRegistrationId' );
-
 		// If this device hasn't yet been added to the database,
 		var deviceInfo = { id:id, type:type };
 		Device.where( deviceInfo ).findOne( function findOneCallback( error, device ) {
-			console.log( 'findOneCallback' );
 			if ( error ) {
-				console.log( 'Error finding device in database' );
 				console.error( error );
 				callback( error );
 			} else {
-				console.log( 'No error finding device in database' );
 				if ( device ) {
-					console.log( 'Device already exists in database, no further action is required' );
 					callback( );
 				} else {
-					console.log( 'Device doesn\'t exist in current database.' );
-
 					// Check the old database for settings for this device.
 					var oldDevice = null;
 					var insertNewDevice = function() {
@@ -85,32 +77,26 @@ module.exports = function() {
 
 					mysqlConnectionPool.getConnection( function( error, connection ) {
 						if ( error ) {
-							console.log( 'Failed to get connection to old database.' );
 							console.error( error );
 							insertNewDevice();
 						} else {
-							console.log( 'Search for device in old server' );
 							const selectOldDevice = 'SELECT youTube, hitbox, twitch FROM devices WHERE id=? and type=?';
 							var inserts = [ id, type ];
 							connection.query( selectOldDevice, inserts, function( error, rows ) {
 								if ( error || ( rows.length != 1 ) ) {
-									console.log( 'Device not found in old server' );
 									console.error( error );
 									connection.release();
 								} else {
-									console.log( 'Delete the entry in the old server.' );
 									oldDevice = rows[ 0 ];
 
 									// Now that the device has been moved from the old to
 									// the new server, delete the entry in the old server.
-									console.log( 'Delete the entry in the old server.' );
 									const deleteOldDevice = 'DELETE from devices WHERE id=? and type=?';
 									connection.query( deleteOldDevice, inserts, function( error, data ) {
 										if ( error ) {
 											console.error( error );
 										} else {
-											console.log( 'Deletion successful' );
-											console.log( data );
+											// TODO assert that only one row was removed
 										}
 
 										connection.release();
