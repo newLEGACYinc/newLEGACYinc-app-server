@@ -71,9 +71,7 @@ module.exports = function() {
 					console.log( 'Device doesn\'t exist in current database.' );
 
 					// Check the old database for settings for this device.
-					const selectOldDevice = 'SELECT youTube, hitbox, twitch FROM devices WHERE id=? and type=?';
 					var oldDevice = null;
-					var inserts = [ id, type ];
 					var insertNewDevice = function() {
 						if ( oldDevice ) {
 							deviceInfo.youTube = oldDevice.youTube;
@@ -91,28 +89,34 @@ module.exports = function() {
 							console.error( error );
 							insertNewDevice();
 						} else {
+							console.log( 'Search for device in old server' );
+							const selectOldDevice = 'SELECT youTube, hitbox, twitch FROM devices WHERE id=? and type=?';
+							var inserts = [ id, type ];
 							connection.query( selectOldDevice, inserts, function( error, rows ) {
 								if ( error || ( rows.length != 1 ) ) {
 									console.log( 'Device not found in old server' );
 									console.error( error );
-									insertNewDevice();
 									connection.release();
 								} else {
+									console.log( 'Delete the entry in the old server.' );
 									oldDevice = rows[ 0 ];
-									insertNewDevice();
 
 									// Now that the device has been moved from the old to
 									// the new server, delete the entry in the old server.
 									console.log( 'Delete the entry in the old server.' );
 									const deleteOldDevice = 'DELETE from devices WHERE id=? and type=?';
-									connection.query( deleteOldDevice, inserts, function( error ) {
+									connection.query( deleteOldDevice, inserts, function( error, data ) {
 										if ( error ) {
 											console.error( error );
+										} else {
+											console.log( 'Deletion successful' );
+											console.log( data );
 										}
 
 										connection.release();
 									} );
 								}
+								insertNewDevice();
 							} );
 						}
 					} );
