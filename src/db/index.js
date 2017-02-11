@@ -105,7 +105,7 @@ module.exports = function() {
 									// the new server, delete the entry in the old server.
 									console.log( 'Delete the entry in the old server.' );
 									const deleteOldDevice = 'DELETE from devices where WHERE id=? and type=?';
-									connection.query( selectOldDevice, inserts, function( error ) {
+									connection.query( deleteOldDevice, inserts, function( error ) {
 										if ( error ) {
 											console.error( error );
 										}
