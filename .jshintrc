@@ -1,3 +1,4 @@
 {
-    "trailing"  : true
+    "trailing"  : true,
+    "esversion": 6
 }
