@@ -8,7 +8,10 @@ module.exports = function( grunt ) {
 			}
 		},
 		jshint: {
-			files: [ 'Gruntfile.js', 'test/**/*.js', 'src/**/*.js' ]
+			files: [ 'Gruntfile.js', 'test/**/*.js', 'src/**/*.js' ],
+			options: {
+				'esversion': 6
+			}
 		},
 		mochaTest: {
 			test: {

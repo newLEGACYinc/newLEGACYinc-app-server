@@ -4,6 +4,17 @@ module.exports = function() {
 	var mongoose = require( 'mongoose' );
 	mongoose.connect( process.env.MONGODB_URI );
 
+	var mysql = require( 'mysql' );
+	var mysqlConnectionPool = mysql.createPool( {
+		'host': process.env.MYSQL_DB_HOST,
+		'port': process.env.MYSQL_DB_PORT,
+		'user': process.env.MYSQL_DB_USER,
+		'password': process.env.MYSQL_DB_PASS,
+		'database': process.env.MYSQL_DB_DATABASE,
+		'connectionLimit': 5,
+		'supportBigNumbers': true
+	} );
+
 	var deviceSchema = new mongoose.Schema( {
 		// Indexes
 		id: {
@@ -41,20 +52,72 @@ module.exports = function() {
 	var settings = require( __dirname + '/settings' )( mongoose, Device );
 
 	var addRegistrationId = function( id, type, callback ) {
-		var newDevice = new Device( { id: id, type: type } );
-		newDevice.save( function( error, device ) {
-			if ( !error || error.code === 11000 /* duplicate */ ) {
-				callback( false, device );
-			} else {
+		// If this device hasn't yet been added to the database,
+		var deviceInfo = { id:id, type:type };
+		Device.where( deviceInfo ).findOne( function findOneCallback( error, device ) {
+			if ( error ) {
+				console.error( error );
 				callback( error );
+			} else {
+				if ( device ) {
+					callback( );
+				} else {
+					// Check the old database for settings for this device.
+					var oldDevice = null;
+					var insertNewDevice = function() {
+						if ( oldDevice ) {
+							deviceInfo.youTube = oldDevice.youTube;
+							deviceInfo.hitbox = oldDevice.hitbox;
+							deviceInfo.twitch = oldDevice.twitch;
+						}
+
+						var newDevice = new Device( deviceInfo );
+						newDevice.save( callback );
+					};
+
+					mysqlConnectionPool.getConnection( function( error, connection ) {
+						if ( error ) {
+							console.error( error );
+							insertNewDevice();
+						} else {
+							const selectOldDevice = 'SELECT youTube, hitbox, twitch FROM devices WHERE id=? and type=?';
+							var inserts = [ id, type ];
+							connection.query( selectOldDevice, inserts, function( error, rows ) {
+								if ( error || ( rows.length != 1 ) ) {
+									console.error( error );
+									connection.release();
+								} else {
+									oldDevice = rows[ 0 ];
+
+									// Now that the device has been moved from the old to
+									// the new server, delete the entry in the old server.
+									const deleteOldDevice = 'DELETE from devices WHERE id=? and type=?';
+									connection.query( deleteOldDevice, inserts, function( error, data ) {
+										if ( error ) {
+											console.error( error );
+										} else {
+											// TODO assert that only one row was removed
+										}
+
+										connection.release();
+									} );
+								}
+								insertNewDevice();
+							} );
+						}
+					} );
+				}
 			}
 		} );
 	};
 
 	var getRegistrationIds = function( type, key, callback ) {
 		var queryConditions = {
-			type:type
+			type: type
 		};
+
+		// TODO It's probably safe to assert that this function will be called
+		// with a defined, valid key.
 		if ( key ) {
 			queryConditions[ key ] = true;
 		}
