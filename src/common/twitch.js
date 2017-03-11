@@ -1,20 +1,19 @@
 module.exports = function() {
-	var TwitchClient = require( 'twitch-sdk' );
+	var request = require( 'request' );
 
-	var twitchAccount = {
-		clientId: process.env.TWITCH_CLIENT_ID,
-		scope: 'channel_read'
+	var requestHeaders = {
+		'Accept': 'application/vnd.twitchtv.v5+json',
+		'Client-ID': process.env.TWITCH_CLIENT_ID
 	};
 
-	TwitchClient.init( twitchAccount, function( error, status ) {
-		if ( error ) {
-			console.error( error );
-		}
-	} );
-
 	function getProfileInfo( callback ) {
-		TwitchClient.api( { method: 'streams', params: { channel: process.env.TWITCH_USERNAME } }, function( error, list ) {
-			callback( error, list.streams[ 0 ] );
+		var requestSettings = {
+			url: 'https://api.twitch.tv/kraken/streams/' + process.env.TWITCH_USER_ID,
+			headers: requestHeaders
+		};
+		request( requestSettings, function( error, response, body ) {
+			var bodyAsJSON = JSON.parse( body );
+			callback( error, bodyAsJSON.stream );
 		} );
 	}
 
