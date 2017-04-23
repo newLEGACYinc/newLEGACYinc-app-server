@@ -19,7 +19,6 @@ module.exports = function() {
 				return res.status( 500 ).send();
 			}
 
-			console.error("Test error");
 			res.status( 200 ).set( 'Content-Type', 'application/javascript' ).send( data );
 		} );
 	};
