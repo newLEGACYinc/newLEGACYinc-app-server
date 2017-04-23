@@ -4,6 +4,7 @@ var app = express();
 var fs = require( 'fs' );
 var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
+require('log4js').replaceConsole();
 
 // MODULE IMPORTS
 var common = require( __dirname + '/common' )();
