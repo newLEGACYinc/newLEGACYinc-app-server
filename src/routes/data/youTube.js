@@ -19,7 +19,7 @@ module.exports = function() {
 				res.status( 200 ).set( 'Content-Type', 'application/javascript' ).send( body );
 			} else {
 				if ( response ) {
-					console.error( response.statusCode );
+					console.error( `Error response from YouTube API: ${response.statusCode}` );
 				}
 				console.error( error );
 				res.status( 500 ).send( error );
