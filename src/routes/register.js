@@ -5,9 +5,10 @@ module.exports = function( db ) {
 
 		db.addRegistrationId( id, type, function( error ) {
 			if ( error  ) {
-				console.log( error );
+				console.error( error );
 				res.status( 500 ).send( );
 			} else {
+				console.trace( `New device added with ID ${id} and type ${type}` );
 				res.status( 200 ).send( );
 			}
 		} );

@@ -4,6 +4,7 @@ var app = express();
 var fs = require( 'fs' );
 var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
+require( 'log4js' ).replaceConsole();
 
 // MODULE IMPORTS
 var common = require( __dirname + '/common' )();
@@ -25,15 +26,10 @@ app.put( '/register', routes.register );
 app.put( '/settings', routes.settings.update );
 app.get( '/settings', routes.settings.get );
 
-// Logging
-if ( process.env.NODE_ENV !== 'production' ) {
-	require( 'longjohn' );
-}
-
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
-	var host = serverHTTP.address().address;
-	var port = serverHTTP.address().port;
+	const host = serverHTTP.address().address;
+	const port = serverHTTP.address().port;
 
 	console.log( 'Listening on ' + host + ':' + port );
 } );

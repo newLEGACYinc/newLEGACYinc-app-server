@@ -2,6 +2,7 @@
 module.exports = function() {
 	// Import libraries
 	var mongoose = require( 'mongoose' );
+	mongoose.Promise = global.Promise;
 	mongoose.connect( process.env.MONGODB_URI );
 
 	var mysql = require( 'mysql' );
@@ -120,6 +121,8 @@ module.exports = function() {
 		// with a defined, valid key.
 		if ( key ) {
 			queryConditions[ key ] = true;
+		} else {
+			console.error( 'getRegistrationIDs called without a key' );
 		}
 		Device.find( queryConditions ).select( 'id -_id' ).exec( function( error, devices ) {
 			if ( error ) {

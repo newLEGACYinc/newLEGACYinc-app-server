@@ -9,17 +9,19 @@ module.exports = function( db ) {
 
 		// If id or type are missing
 		if ( !id || !type ) {
-			res.status( 400 ).send(
-				util.format( 'Device ID and type Required. Got %s:%s',
-					id, type )
-			);
+			// Something is sending malformed requests to the server.
+			const errorString = util.format(
+				'Device ID and type Required. Got %s:%s', id, type );
+
+			console.warn( errorString );
+			res.status( 400 ).send( errorString );
 			return;
 		}
 
-		db.settings.update( id, type, req.body, function( err ) {
-			if ( err ) {
-				console.log( err );
-				return res.status( 500 ).send( err );
+		db.settings.update( id, type, req.body, function( error ) {
+			if ( error ) {
+				console.error( error );
+				return res.status( 500 ).send( error );
 			}
 			return res.status( 200 ).send();
 		} );

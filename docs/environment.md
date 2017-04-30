@@ -39,6 +39,7 @@
 ### Twitch
 
   - `TWITCH_CLIENT_ID`
+  - `TWITCH_USER_ID` - newLEGACYinc's ID on Twitch (i.e. 12606037)
   - `TWITCH_USERNAME` - newLEGACYinc's username on Twitch (i.e. newLEGACYinc)
 
 ### Twitter
