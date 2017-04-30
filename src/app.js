@@ -28,8 +28,8 @@ app.get( '/settings', routes.settings.get );
 
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
-	var host = serverHTTP.address().address;
-	var port = serverHTTP.address().port;
+	const host = serverHTTP.address().address;
+	const port = serverHTTP.address().port;
 
 	console.log( 'Listening on ' + host + ':' + port );
 } );
