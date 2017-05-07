@@ -19,18 +19,19 @@ module.exports = function( db ) {
 
 			// Divide into groups based on max recipients
 			var chunks = [];
+			const chunkSize = 1000; // TODO move constant to config
 			while ( ids.length > 0 ) {
-				chunks.push( ids.splice( 0, 1000 ) ); // TODO move constant to config
+				chunks.push( ids.splice( 0, chunkSize ) );
 			}
 
 			// For each chunk of ids
 			chunks.forEach( function( chunk ) {
-				// Send the message to the registration ids using the sender
-				// TODO move constant to config
-				gcmSender.send( message, chunk, 4, function( err, result ) {
+				const retryCount = 4; // TODO move constant to config
+				gcmSender.send( message, chunk, retryCount, function( err, result ) {
 					if ( err ) {
-						console.log( 'error in gcm ' + err ); // TODO handle errors properly
-						return;
+						console.error( 'Error sending message to GCM client' );
+						console.error( err );
+						return; // TODO handle errors properly
 					}
 					updateDatabase( chunk, result.results );
 				} );
