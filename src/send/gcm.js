@@ -18,8 +18,8 @@ module.exports = function( db ) {
 			}
 
 			// Divide into groups based on max recipients
-			var chunks = []; // TODO move constant to config
-			const chunkSize = 1000;
+			var chunks = [];
+			const chunkSize = 1000; // TODO move constant to config
 			while ( ids.length > 0 ) {
 				chunks.push( ids.splice( 0, chunkSize ) );
 			}
