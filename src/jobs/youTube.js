@@ -24,7 +24,7 @@ module.exports = function( sender ) {
 			}
 		};
 		request( options, function( error, response, body ) {
-			if ( !error && response.statusCode === 200 ) {
+			if ( !error && ( response.statusCode === 200 ) ) {
 				body = JSON.parse( body );
 				var items = body.items;
 				var latestVideo = items[ 0 ];
@@ -41,10 +41,9 @@ module.exports = function( sender ) {
 					return callback( false, false );
 				}
 			} else {
-				if ( response ) {
-					console.error( response.statusCode );
-				}
+				console.error( 'Error retrieving response from YouTube.' );
 				console.error( error );
+				console.error( response );
 				return callback( error );
 			}
 		} );
