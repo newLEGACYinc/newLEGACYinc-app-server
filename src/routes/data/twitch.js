@@ -6,6 +6,7 @@ module.exports = function( common ) {
 			res.header( 'Access-Control-Allow-Origin', '*' );
 
 			if ( err ) {
+				console.error( 'Error retrieving information from twitch' );
 				console.error( err );
 				res.status( 500 ).send();
 			} else {

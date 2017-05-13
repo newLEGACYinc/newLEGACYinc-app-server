@@ -6,6 +6,7 @@ module.exports = function() {
 	return function instagramDataGet( req, res ) {
 		ig.user_media_recent( process.env.INSTAGRAM_USER_ID, function( err, results, remaining, limit ) {
 			if ( err ) {
+				console.error( 'Error retrieving information from instagram' );
 				console.error( err );
 				return res.status( 500 ).send();
 			}

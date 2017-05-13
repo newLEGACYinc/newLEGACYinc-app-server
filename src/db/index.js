@@ -57,6 +57,7 @@ module.exports = function() {
 		var deviceInfo = { id:id, type:type };
 		Device.where( deviceInfo ).findOne( function findOneCallback( error, device ) {
 			if ( error ) {
+				console.error( 'Error retrieving device from database.' );
 				console.error( error );
 				callback( error );
 			} else {
@@ -78,6 +79,7 @@ module.exports = function() {
 
 					mysqlConnectionPool.getConnection( function( error, connection ) {
 						if ( error ) {
+							console.error( 'Error retrieving connection to mysql database.' );
 							console.error( error );
 							insertNewDevice();
 						} else {
@@ -85,6 +87,7 @@ module.exports = function() {
 							var inserts = [ id, type ];
 							connection.query( selectOldDevice, inserts, function( error, rows ) {
 								if ( error || ( rows.length != 1 ) ) {
+									console.error( 'Error retrieving device from mysql database.' );
 									console.error( error );
 									connection.release();
 								} else {
@@ -95,9 +98,10 @@ module.exports = function() {
 									const deleteOldDevice = 'DELETE from devices WHERE id=? and type=?';
 									connection.query( deleteOldDevice, inserts, function( error, data ) {
 										if ( error ) {
+											console.error( 'Error deleting old device information from mysql database.' );
 											console.error( error );
-										} else {
-											// TODO assert that only one row was removed
+										} else if ( data.length != 1 ) {
+											console.error( `Expected to remove one row from mysql database. Removed ${data.length} rows` );
 										}
 
 										connection.release();
@@ -117,13 +121,12 @@ module.exports = function() {
 			type: type
 		};
 
-		// TODO It's probably safe to assert that this function will be called
-		// with a defined, valid key.
 		if ( key ) {
 			queryConditions[ key ] = true;
 		} else {
 			console.error( 'getRegistrationIDs called without a key' );
 		}
+
 		Device.find( queryConditions ).select( 'id -_id' ).exec( function( error, devices ) {
 			if ( error ) {
 				console.log( error );
@@ -147,6 +150,7 @@ module.exports = function() {
 			if ( error ) {
 				// Since this ID has previously been confirmed to be present in
 				// the database, this operation should never error.
+				console.error( 'Error removing device from database' );
 				console.error( error );
 			}
 		} );

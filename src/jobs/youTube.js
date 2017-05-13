@@ -51,7 +51,7 @@ module.exports = function( sender ) {
 
 	function notify( info, callback ) {
 		if ( !info ) {
-			console.error( 'no video info' );
+			console.error( 'Notify called without any video information.' );
 			callback();
 		} else {
 			var title = 'New YouTube video!';
@@ -63,6 +63,7 @@ module.exports = function( sender ) {
 	function job( callback ) {
 		newVideo( function( error, info ) {
 			if ( error ) {
+				console.error( 'Error retrieving new video information' );
 				console.error( error );
 				callback( error );
 			} else if ( info ) {
