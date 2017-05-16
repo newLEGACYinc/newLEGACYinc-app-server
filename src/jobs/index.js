@@ -14,8 +14,10 @@ module.exports = function( common, sender ) {
 	// Each job function expects a callback
 	var callback = function( error ) {
 		if ( error ) {
-			console.error( 'CronJob error\'d' );
-			console.error( error );
+			// We don't necessarily want to error if our job fails.
+			// Each job is charged with deciding what is error-worthy.
+			console.warn( 'CronJob error\'d' );
+			console.warn( error );
 		}
 	};
 
