@@ -15,6 +15,7 @@ module.exports = function() {
 			'count': 1
 		}, function( err, data, twitterResponse ) {
 			if ( err ) {
+				console.error( 'Error retrieving data from twitter' );
 				console.error( error );
 				return res.status( 500 ).send();
 			}

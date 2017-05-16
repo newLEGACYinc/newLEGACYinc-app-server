@@ -20,6 +20,7 @@ module.exports = function( db ) {
 
 		db.settings.update( id, type, req.body, function( error ) {
 			if ( error ) {
+				console.error( 'Error updating settings for device' );
 				console.error( error );
 				return res.status( 500 ).send( error );
 			}

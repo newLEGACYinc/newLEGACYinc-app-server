@@ -24,7 +24,7 @@ module.exports = function( sender ) {
 			}
 		};
 		request( options, function( error, response, body ) {
-			if ( !error && response.statusCode === 200 ) {
+			if ( !error && ( response.statusCode === 200 ) ) {
 				body = JSON.parse( body );
 				var items = body.items;
 				var latestVideo = items[ 0 ];
@@ -41,10 +41,9 @@ module.exports = function( sender ) {
 					return callback( false, false );
 				}
 			} else {
-				if ( response ) {
-					console.error( response.statusCode );
-				}
+				console.error( 'Error retrieving response from YouTube.' );
 				console.error( error );
+				console.error( response );
 				return callback( error );
 			}
 		} );
@@ -52,7 +51,7 @@ module.exports = function( sender ) {
 
 	function notify( info, callback ) {
 		if ( !info ) {
-			console.error( 'no video info' );
+			console.error( 'Notify called without any video information.' );
 			callback();
 		} else {
 			var title = 'New YouTube video!';
@@ -64,6 +63,7 @@ module.exports = function( sender ) {
 	function job( callback ) {
 		newVideo( function( error, info ) {
 			if ( error ) {
+				console.error( 'Error retrieving new video information' );
 				console.error( error );
 				callback( error );
 			} else if ( info ) {
