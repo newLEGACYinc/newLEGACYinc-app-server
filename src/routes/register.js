@@ -5,6 +5,7 @@ module.exports = function( db ) {
 
 		db.addRegistrationId( id, type, function( error ) {
 			if ( error  ) {
+				console.error( 'Error adding registration ID' );
 				console.error( error );
 				res.status( 500 ).send( );
 			} else {

@@ -19,6 +19,7 @@ module.exports = function( db ) {
 			// Get the settings for the device from the database
 			db.settings.get( id, type, function( error, settings ) {
 				if ( error ) {
+					console.error( 'Error retrieving settings for device' );
 					console.error( error );
 					res.status( 500 ).send( error );
 					return;
