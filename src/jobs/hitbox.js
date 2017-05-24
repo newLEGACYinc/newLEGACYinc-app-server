@@ -1,4 +1,4 @@
-module.exports = function( sender ) {
+module.exports = function( db, sender ) {
 
 	// Library imports
 	var request = require( 'request' );
@@ -6,7 +6,7 @@ module.exports = function( sender ) {
 
 	// Private variables
 	var KEY = 'hitbox';
-	var lastOnline = moment();
+	var lastOnline = moment(); // TODO store this in redis
 
 	/**
 	 * Is the hitbox stream currently live?
@@ -19,36 +19,40 @@ module.exports = function( sender ) {
 			} else if ( response.statusCode != 200 ) {
 				callback( response.statusCode );
 			} else {
-				var parsedBody = null;
-				var jsonParseError;
-
-				// Attempt to parse the response body
-				try {
-					parsedBody = JSON.parse( body );
-				} catch ( e ) {
-					// The hitbox API feeds us invalid JSON **CONSTANTLY**.
-					// Since this API is known to be unreliable, we'll only
-					// warn (and not error) when parsing the hitbox response fails.
-					console.warn( `Failed to parse hitbox api message
-									(did the hitbox api give you invalid JSON again?)` );
-					jsonParseError = e;
-				}
-
-				// If we parsed the response body, check to see if the stream is live
-				if ( parsedBody && !jsonParseError ) {
-					// There should be only one livestream with the username
-					var livestream = parsedBody.livestream[ 0 ];
-
-					if ( livestream.media_is_live === '1' ) {
-						callback( false, livestream );
-					} else {
-						callback( false, false );
-					}
-				} else {
-					callback( jsonParseError );
-				}
+				parseHitboxResponse( body, callback );
 			}
 		} );
+	}
+
+	function parseHitboxResponse( body, callback ) {
+		var parsedBody = null;
+		let jsonParseError;
+
+		// Attempt to parse the response body
+		try {
+			parsedBody = JSON.parse( body );
+		} catch ( e ) {
+			// The hitbox API feeds us invalid JSON **CONSTANTLY**.
+			// Since this API is known to be unreliable, we'll only
+			// warn (and not error) when parsing the hitbox response fails.
+			console.warn( `Failed to parse hitbox api message
+							(did the hitbox api give you invalid JSON again?)` );
+			jsonParseError = e;
+		}
+
+		// If we parsed the response body, check to see if the stream is live
+		if ( parsedBody && !jsonParseError ) {
+			// There should be only one livestream with the username
+			var livestream = parsedBody.livestream[ 0 ];
+
+			if ( livestream.media_is_live === '1' ) {
+				callback( false, livestream );
+			} else {
+				callback( false, false );
+			}
+		} else {
+			callback( jsonParseError );
+		}
 	}
 
 	function job( callback ) {

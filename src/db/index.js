@@ -16,6 +16,14 @@ module.exports = function() {
 		'supportBigNumbers': true
 	} );
 
+	let redis = require( 'redis' );
+
+	function getRedisClient() {
+		return redis.createClient( {
+			url: process.env.REDIS_URL
+		} );
+	}
+
 	var deviceSchema = new mongoose.Schema( {
 		// Indexes
 		id: {
@@ -158,6 +166,7 @@ module.exports = function() {
 
 	return {
 		addRegistrationId: addRegistrationId,
+		getRedisClient: getRedisClient,
 		getRegistrationIds: getRegistrationIds,
 		removeRegistrationId: removeRegistrationId,
 		settings: settings

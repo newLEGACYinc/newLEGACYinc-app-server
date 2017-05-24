@@ -11,7 +11,7 @@ var common = require( __dirname + '/common' )();
 var db = require( __dirname + '/db' )();
 var routes = require( __dirname + '/routes' )( common, db );
 var sender = require( __dirname + '/send' )( db );
-var jobs = require( __dirname + '/jobs' )( common, sender );
+var jobs = require( __dirname + '/jobs' )( common, db, sender );
 
 // EXPRESS CONFIG
 app.set( 'port', process.env.PORT || 3000 );

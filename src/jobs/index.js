@@ -1,4 +1,4 @@
-module.exports = function( common, sender ) {
+module.exports = function( common, db, sender ) {
 	// private Variables
 	var THIRTY_SECOND_INTERVAL = '*/30 * * * * *';
 	var ONE_MINUTE_INTERVAL = '0 */1 * * * *';
@@ -7,7 +7,7 @@ module.exports = function( common, sender ) {
 	var CronJob = require( 'cron' ).CronJob;
 
 	// Module imports
-	var hitbox = require( __dirname + '/hitbox' )( sender );
+	var hitbox = require( __dirname + '/hitbox' )( db, sender );
 	var twitch = require( __dirname + '/twitch' )( common, sender );
 	var youTube = require( __dirname + '/youTube' )( sender );
 
