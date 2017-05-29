@@ -12,17 +12,21 @@ module.exports = function( common, db, sender ) {
 	var youTube = require( __dirname + '/youTube' )( sender );
 
 	// Each job function expects a callback
-	var callback = function( error ) {
-		if ( error ) {
-			// We don't necessarily want to error if our job fails.
-			// Each job is charged with deciding what is error-worthy.
-			console.warn( 'CronJob error\'d' );
-			console.warn( error );
-		}
-	};
+	var callback =
+
+	function getCallbackFunction( jobName ) {
+		return function cronJobCallback( error ) {
+			if ( error ) {
+				// We don't necessarily want to error if our job fails.
+				// Each job is charged with deciding what is error-worthy.
+				console.warn( `${jobName} CronJob error'd` );
+				console.warn( error );
+			}
+		};
+	}
 
 	// Setup and start jobs
-	new CronJob(    ONE_MINUTE_INTERVAL,   function hitboxJob() { hitbox.job( callback ); }, null, true );
-	new CronJob( THIRTY_SECOND_INTERVAL, function youTubeJob() { youTube.job( callback ); }, null, true );
-	new CronJob( THIRTY_SECOND_INTERVAL,   function twitchJob() { twitch.job( callback ); }, null, true );
+	new CronJob(    ONE_MINUTE_INTERVAL,   function hitboxJob() { hitbox.job( getCallbackFunction( 'hitbox' ) ); }, null, true );
+	new CronJob( THIRTY_SECOND_INTERVAL, function youTubeJob() { youTube.job( getCallbackFunction( 'youTube' ) ); }, null, true );
+	new CronJob( THIRTY_SECOND_INTERVAL,   function twitchJob() { twitch.job( getCallbackFunction( 'twitch' ) ); }, null, true );
 };
