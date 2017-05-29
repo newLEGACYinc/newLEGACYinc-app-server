@@ -12,8 +12,6 @@ module.exports = function( common, db, sender ) {
 	var youTube = require( __dirname + '/youTube' )( sender );
 
 	// Each job function expects a callback
-	var callback =
-
 	function getCallbackFunction( jobName ) {
 		return function cronJobCallback( error ) {
 			if ( error ) {
