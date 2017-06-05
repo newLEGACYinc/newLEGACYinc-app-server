@@ -6,7 +6,6 @@ module.exports = function( db, sender ) {
 
 	// Private variables
 	var KEY = 'hitbox';
-	var lastOnline = moment(); // TODO store this in redis
 	const redisClient = db.getRedisClient();
 	const LAST_ONLINE_KEY = 'hitboxLastOnline';
 
