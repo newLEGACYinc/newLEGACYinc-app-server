@@ -76,11 +76,16 @@ module.exports = function( db, sender ) {
 						}
 
 						// If more recently online than last time
-						if ( liveSince && liveSince.isAfter( lastOnline ) ) {
-							lastOnline = liveSince;
+						if ( !lastOnline || ( liveSince && liveSince.isAfter( lastOnline ) ) ) {
+							redisClient.set( LAST_ONLINE_KEY, liveSince.toISOString(), function setLastOnline( redisSetError ) {
+								if ( redisSetError ) {
+									console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
+									console.error( redisSetError );
+								}
 
-							// Notification function will handle callback
-							notify( body, callback );
+								// Notification function will handle callback
+								notify( body, callback );
+							} );
 						} else {
 							callback();
 						}
