@@ -7,6 +7,8 @@ module.exports = function( db, sender ) {
 	// Private variables
 	var KEY = 'hitbox';
 	var lastOnline = moment(); // TODO store this in redis
+	const redisClient = db.getRedisClient();
+	const LAST_ONLINE_KEY = 'hitboxLastOnline';
 
 	/**
 	 * Is the hitbox stream currently live?
@@ -62,15 +64,28 @@ module.exports = function( db, sender ) {
 			} else if ( body ) {
 				var liveSince = moment( new Date( body.channel.media_live_since + ' UTC' ) );
 
-				// If more recently online than last time
-				if ( liveSince && liveSince.isAfter( lastOnline ) ) {
-					lastOnline = liveSince;
+				// Attempt to get the last time the stream was online
+				redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisError, lastOnline ) {
+					if ( redisError ) {
+						console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
+						console.error( redisError );
+						callback( error );
+					} else {
+						if ( !lastOnline ) {
+							console.warn( `Value for key ${LAST_ONLINE_KEY} not previously set` );
+						}
 
-					// Notification function will handle callback
-					notify( body, callback );
-				} else {
-					callback();
-				}
+						// If more recently online than last time
+						if ( liveSince && liveSince.isAfter( lastOnline ) ) {
+							lastOnline = liveSince;
+
+							// Notification function will handle callback
+							notify( body, callback );
+						} else {
+							callback();
+						}
+					}
+				} );
 			} else {
 				// No error but stream isn't online
 				callback();
