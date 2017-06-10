@@ -68,7 +68,7 @@ module.exports = function( db, sender ) {
 					if ( redisError ) {
 						console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
 						console.error( redisError );
-						callback( error );
+						callback( redisError );
 					} else {
 						if ( !lastOnline ) {
 							console.warn( `Value for key ${LAST_ONLINE_KEY} not previously set` );

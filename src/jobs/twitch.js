@@ -5,18 +5,17 @@ module.exports = function( common, sender ) {
 
 	// Private variables
 	var KEY = 'twitch';
-	var online = false;
+	const redisClient = db.getRedisClient();
+	const LAST_ONLINE_KEY = 'twitchChannelStatus';
 
-	// callback(streamInfo) if the stream is Live
-	// callback(null) if the stream is offline
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, stream ) {
 			if ( err ) {
-				// we weren't able to get our profile info from the network
-				// use our previous value for the stream status
-				callback( online );
+				console.error( 'Failure to get the twitch profile info');
+				console.error( err );
+				callback( err );
 			} else {
-				callback( stream );
+				callback( err, stream );
 			}
 		} );
 	}
@@ -29,14 +28,28 @@ module.exports = function( common, sender ) {
 	}
 
 	function job( callback ) {
-		isLive( function( info ) {
-			var previouslyOnline = online;
-			online = info;
-			if ( online && !previouslyOnline ) {
-				notify( info, callback );
-			} else {
-				callback();
-			}
+		isLive( function( isLiveError, newInfo ) {
+			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisError, previousInfo ) {
+				if ( redisError ) {
+					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
+					console.error( redisError );
+					callback( redisError );
+				} else {
+					const currentInfo = ( isLiveError ) ? previousInfo : newInfo.channel.status;
+					redisClient.set( LAST_ONLINE_KEY, currentInfo, function setLastOnline( redisSetError ) {
+						if ( redisSetError ) {
+							console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
+							console.error( redisSetError );
+						}
+
+						if ( currentInfo ) {
+							notify( info, callback );
+						} else {
+							callback();
+						}
+					} );
+				}
+			} );
 		} );
 	}
 
