@@ -1,4 +1,4 @@
-module.exports = function( common, sender ) {
+module.exports = function( common, db, sender ) {
 	// Module imports
 	var moment = require( 'moment' );
 	var request = require( 'request' );

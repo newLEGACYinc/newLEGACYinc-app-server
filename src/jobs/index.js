@@ -8,7 +8,7 @@ module.exports = function( common, db, sender ) {
 
 	// Module imports
 	var hitbox = require( __dirname + '/hitbox' )( db, sender );
-	var twitch = require( __dirname + '/twitch' )( common, sender );
+	var twitch = require( __dirname + '/twitch' )( common, db, sender );
 	var youTube = require( __dirname + '/youTube' )( sender );
 
 	// Each job function expects a callback
