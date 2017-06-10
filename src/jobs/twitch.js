@@ -28,17 +28,18 @@ module.exports = function( common, db, sender ) {
 
 	function job( callback ) {
 		isLive( function( isLiveError, newInfo ) {
-			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisError, previousInfo ) {
-				if ( redisError ) {
+			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
+				if ( redisGetError ) {
 					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
-					console.error( redisError );
-					callback( redisError );
+					console.error( redisGetError );
+					callback( redisGetError );
 				} else {
 					const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
-					redisClient.set( LAST_ONLINE_KEY, currentInfo, function setLastOnline( redisSetError ) {
-						if ( redisSetError ) {
+
+					var afterRedisAction = function( redisError ) {
+						if ( redisError ) {
 							console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
-							console.error( redisSetError );
+							console.error( redisError );
 						}
 
 						if ( currentInfo ) {
@@ -46,7 +47,13 @@ module.exports = function( common, db, sender ) {
 						} else {
 							callback();
 						}
-					} );
+					}
+
+					if ( currentInfo ) {
+						redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
+					} else {
+						redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
+					}
 				}
 			} );
 		} );
