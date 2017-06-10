@@ -34,7 +34,7 @@ module.exports = function( common, db, sender ) {
 					console.error( redisError );
 					callback( redisError );
 				} else {
-					const currentInfo = ( isLiveError ) ? previousInfo : newInfo.channel.status;
+					const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
 					redisClient.set( LAST_ONLINE_KEY, currentInfo, function setLastOnline( redisSetError ) {
 						if ( redisSetError ) {
 							console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
