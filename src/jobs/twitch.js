@@ -21,9 +21,8 @@ module.exports = function( common, sender ) {
 	}
 
 	// notify users that about the stream status
-	function notify( info, callback ) {
-		var title = 'Live on Twitch!';
-		var message = info.channel.status;
+	function notify( message, callback ) {
+		const title = 'Live on Twitch!';
 		sender.send( title, message, KEY, callback );
 	}
 
@@ -43,7 +42,7 @@ module.exports = function( common, sender ) {
 						}
 
 						if ( currentInfo ) {
-							notify( info, callback );
+							notify( currentInfo, callback );
 						} else {
 							callback();
 						}
