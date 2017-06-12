@@ -9,7 +9,7 @@ module.exports = function( db ) {
 				console.error( error );
 				res.status( 500 ).send( );
 			} else {
-				console.trace( `New device added with ID ${id} and type ${type}` );
+				console.info( `New device added with ID ${id} and type ${type}` );
 				res.status( 200 ).send( );
 			}
 		} );
