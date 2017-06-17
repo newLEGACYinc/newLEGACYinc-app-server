@@ -35,6 +35,8 @@ module.exports = function( common, db, sender ) {
 					callback( redisGetError );
 				} else {
 					const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
+					console.log( previousInfo );
+					console.log( currentInfo );
 
 					var afterRedisAction = function( redisError ) {
 						if ( redisError ) {
