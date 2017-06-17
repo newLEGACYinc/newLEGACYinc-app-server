@@ -51,10 +51,12 @@ module.exports = function( db ) {
 
 		// Iterate over the sent messages
 		for ( var i = 0; i < results.length; i++ ) {
+			const result = results[ i ];
+			console.log( result );
 
 			// If the registration id for a device has changed
 			// (this branch will be taken on the old device id)
-			if ( results[ i ].registration_id ) {
+			if ( result.registration_id ) {
 
 				// Remove the old registration_id from the table
 				// TODO attempt to save the old settings
