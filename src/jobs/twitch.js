@@ -34,29 +34,25 @@ module.exports = function( common, db, sender ) {
 					console.error( redisGetError );
 					callback( redisGetError );
 				} else {
-					if ( !previousInfo ) {
-						callback();
-					} else {
-						const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
+					const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
 
-						var afterRedisAction = function( redisError ) {
-							if ( redisError ) {
-								console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
-								console.error( redisError );
-							}
-
-							if ( currentInfo ) {
-								notify( currentInfo, callback );
-							} else {
-								callback();
-							}
+					var afterRedisAction = function( redisError ) {
+						if ( redisError ) {
+							console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
+							console.error( redisError );
 						}
 
 						if ( currentInfo ) {
-							redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
+							notify( currentInfo, callback );
 						} else {
-							redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
+							callback();
 						}
+					}
+
+					if ( currentInfo ) {
+						redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
+					} else {
+						redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
 					}
 				}
 			} );
