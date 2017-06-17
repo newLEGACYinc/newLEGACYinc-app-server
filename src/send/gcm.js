@@ -8,7 +8,8 @@ module.exports = function( db ) {
 	function send( title, messageText, key, callback ) {
 
 		// Construct message
-		var message = constructMessage( title, messageText, key );
+		const message = constructMessage( title, messageText, key );
+		console.log(message);
 
 		// Get all of the registration ids from the database
 		db.getRegistrationIds( 'GCM', key, function( err, ids ) {
@@ -33,6 +34,8 @@ module.exports = function( db ) {
 						console.error( err );
 						return; // TODO handle errors properly
 					}
+
+					console.log(result);
 					updateDatabase( chunk, result.results );
 				} );
 			} );
