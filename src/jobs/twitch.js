@@ -34,7 +34,7 @@ module.exports = function( common, db, sender ) {
 					console.error( redisGetError );
 					callback( redisGetError );
 				} else {
-					if ( previousInfo ) {
+					if ( !previousInfo ) {
 						callback();
 					} else {
 						const currentInfo = ( isLiveError ) ? previousInfo : ( newInfo ) ? newInfo.channel.status : null;
