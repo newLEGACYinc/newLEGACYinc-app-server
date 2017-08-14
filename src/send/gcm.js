@@ -20,7 +20,7 @@ module.exports = function( db ) {
 		fcmSender.send( message, function( error, response ) {
 			if ( error ) {
 				console.error( 'FCM send error' );
-				console.error( error );
+				console.log( error );
 			}
 
 			callback( error );
