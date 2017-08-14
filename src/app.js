@@ -11,6 +11,7 @@ var db = require( __dirname + '/db' )();
 var routes = require( __dirname + '/routes' )( common, db );
 var sender = require( __dirname + '/send' )( db );
 var jobs = require( __dirname + '/jobs' )( common, db, sender );
+require( 'log4js' ).replaceConsole();
 
 // EXPRESS CONFIG
 app.set( 'port', process.env.PORT || 3000 );
@@ -25,11 +26,6 @@ app.put( '/register', routes.register );
 app.put( '/settings', routes.settings.update );
 app.get( '/settings', routes.settings.get );
 
-if ( process.env.NODE_ENV === 'development' ) {
-	require( 'longjohn' );
-} else {
-	require( 'log4js' ).replaceConsole();
-}
 
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {

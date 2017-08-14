@@ -8,7 +8,9 @@ module.exports = function( db ) {
 	function send( title, messageText, key, callback ) {
 
 		// Construct message
-		var message = {
+		const to = `/topics/${key}`;
+		const message = {
+			to: to,
 			collapse_key: key,
 
 			notification: {
@@ -19,9 +21,8 @@ module.exports = function( db ) {
 
 		fcmSender.send( message, function( error, response ) {
 			if ( error ) {
-				var util = require( 'util' );
 				console.error( 'FCM send error' );
-				console.log( util.inspect( error, { showHidden: false, depth: null } ) );
+				console.log( error );
 			}
 
 			callback( error );
