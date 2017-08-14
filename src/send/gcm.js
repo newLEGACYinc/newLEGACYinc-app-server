@@ -8,7 +8,7 @@ module.exports = function( db ) {
 	function send( title, messageText, key, callback ) {
 
 		// Construct message
-		const to = `/topics/${key}`;
+		const to = `/topics/`;
 		const message = {
 			to: to,
 			collapse_key: key,
