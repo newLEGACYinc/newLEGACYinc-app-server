@@ -22,8 +22,6 @@ app.use( bodyParser.json() );
 // EXPRESS ROUTING
 app.get( '/', routes.index );
 app.use( '/data', routes.data );
-app.put( '/settings', routes.settings.update );
-app.get( '/settings', routes.settings.get );
 
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
