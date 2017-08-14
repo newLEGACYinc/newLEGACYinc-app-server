@@ -8,6 +8,6 @@ module.exports = function() {
 	}
 
 	return {
-		getRedisClient: getRedisClient,
+		getRedisClient: getRedisClient
 	};
 };
