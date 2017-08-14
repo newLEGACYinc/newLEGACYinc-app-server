@@ -20,5 +20,5 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-jscs' );
 
 	grunt.registerTask( 'travis', [ 'test' ] );
-	grunt.registerTask( 'test', [ 'jshint', 'jscs'] );
+	grunt.registerTask( 'test', [ 'jshint', 'jscs' ] );
 };
