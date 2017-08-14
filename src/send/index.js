@@ -1,7 +1,7 @@
-module.exports = function( db ) {
+module.exports = function( ) {
 
 	// Module imports
-	var gcm = require( __dirname + '/gcm' )( db );
+	var gcm = require( __dirname + '/gcm' )( );
 
 	function send( title, message, key, callback ) {
 

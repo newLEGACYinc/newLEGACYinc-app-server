@@ -9,7 +9,7 @@ var bodyParser = require( 'body-parser' );
 var common = require( __dirname + '/common' )();
 var db = require( __dirname + '/db' )();
 var routes = require( __dirname + '/routes' )( common, db );
-var sender = require( __dirname + '/send' )( db );
+var sender = require( __dirname + '/send' )( );
 var jobs = require( __dirname + '/jobs' )( common, db, sender );
 require( 'log4js' ).replaceConsole();
 
