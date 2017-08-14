@@ -17,7 +17,7 @@ module.exports = function( db ) {
 			}
 		};
 
-		fcm.send( message, function( error, response ) {
+		fcmSender.send( message, function( error, response ) {
 			if ( error ) {
 				console.error( 'FCM send error' );
 				console.error( error );
