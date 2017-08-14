@@ -50,7 +50,7 @@ module.exports = function( common, db, sender ) {
 							} else {
 								callback();
 							}
-						}
+						};
 
 						if ( currentInfo ) {
 							redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
