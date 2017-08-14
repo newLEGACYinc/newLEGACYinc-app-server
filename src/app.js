@@ -4,7 +4,6 @@ var app = express();
 var fs = require( 'fs' );
 var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
-require( 'log4js' ).replaceConsole();
 
 // MODULE IMPORTS
 var common = require( __dirname + '/common' )();
@@ -28,6 +27,8 @@ app.get( '/settings', routes.settings.get );
 
 if ( process.env.NODE_ENV === 'development' ) {
 	require( 'longjohn' );
+} else {
+	require( 'log4js' ).replaceConsole();
 }
 
 // START SERVER
