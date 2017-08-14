@@ -19,8 +19,9 @@ module.exports = function( db ) {
 
 		fcmSender.send( message, function( error, response ) {
 			if ( error ) {
+				var util = require( 'util' );
 				console.error( 'FCM send error' );
-				console.log( error );
+				console.log( util.inspect( error, { showHidden: false, depth: null } ) );
 			}
 
 			callback( error );
