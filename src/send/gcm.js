@@ -24,7 +24,7 @@ module.exports = function( db ) {
 			}
 
 			callback( error );
-		});
+		} );
 	}
 
 	return {

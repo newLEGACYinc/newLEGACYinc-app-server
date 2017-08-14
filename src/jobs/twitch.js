@@ -11,7 +11,7 @@ module.exports = function( common, db, sender ) {
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, stream ) {
 			if ( err ) {
-				console.error( 'Failure to get the twitch profile info');
+				console.error( 'Failure to get the twitch profile info' );
 				console.error( err );
 				callback( err );
 			} else {
