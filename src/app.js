@@ -26,6 +26,10 @@ app.put( '/register', routes.register );
 app.put( '/settings', routes.settings.update );
 app.get( '/settings', routes.settings.get );
 
+if ( process.env.NODE_ENV === 'development' ) {
+	require( 'longjohn' );
+}
+
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
 	const host = serverHTTP.address().address;
