@@ -6,8 +6,8 @@ var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
 
 // MODULE IMPORTS
-var common = require( __dirname + '/common' )();
 var db = require( __dirname + '/db' )();
+var common = require( __dirname + '/common' )( db );
 var routes = require( __dirname + '/routes' )( common, db );
 var sender = require( __dirname + '/send' )( );
 var jobs = require( __dirname + '/jobs' )( common, db, sender );

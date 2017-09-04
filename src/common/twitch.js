@@ -1,5 +1,7 @@
-module.exports = function() {
+module.exports = function( db ) {
 	var request = require( 'request' );
+	const redisClient = db.getRedisClient();
+	const LAST_ONLINE_KEY = 'twitchChannelLastOnlineTime';
 
 	var requestHeaders = {
 		'Accept': 'application/vnd.twitchtv.v5+json',
@@ -17,7 +19,32 @@ module.exports = function() {
 		} );
 	}
 
+	function getLastOnline( callback ) {
+		// Most of the time, the last online time will have previously been stored in the DB
+		redisClient.get( LAST_ONLINE_KEY, function gotLastOnlineTime( redisGetError, lastOnlineTime ) {
+			if ( redisGetError ) {
+				console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
+				console.error( redisGetError );
+				callback( redisGetError );
+			} else {
+				if ( lastOnlineTime ) {
+					callback( null, lastOnlineTime );
+				} else {
+					// Fallback: query the channel last updated time
+					const requestSettings = {
+						url: `https://api.twitch.tv/kraken/channels/${process.env.TWITCH_USERNAME}`,
+						headers: requestHeaders
+					};
+					request( requestSettings, function( error, response, body ) {
+						callback( error, body.updated_at );
+					} );
+				}
+			}
+		} );
+	}
+
 	return {
-		getProfileInfo: getProfileInfo
+		getProfileInfo: getProfileInfo,
+		getLastOnline: getLastOnline
 	};
 };
