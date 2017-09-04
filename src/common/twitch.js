@@ -40,7 +40,8 @@ module.exports = function( db ) {
 					};
 					request( requestSettings, function( error, response, body ) {
 						const bodyAsJSON = JSON.parse( body );
-						console.log( 'got value from server: ' + bodyAsJSON.updated_at );
+						console.log( 'got value from server: ' );
+						console.log( bodyAsJSON );
 						callback( error, bodyAsJSON.updated_at );
 					} );
 				}
