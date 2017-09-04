@@ -8,9 +8,9 @@ module.exports = function( common ) {
 			// (Necessary for client-side applications like the chrome extension)
 			res.header( 'Access-Control-Allow-Origin', '*' );
 
-			if ( err ) {
+			if ( error ) {
 				console.error( 'Error retrieving information from twitch' );
-				console.error( err );
+				console.error( error );
 				res.status( 500 ).send();
 			} else {
 				res.status( 200 ).send( lastOnline );
@@ -18,14 +18,14 @@ module.exports = function( common ) {
 		} );
 	} );
 	router.get( '/', function twitchDataGet( req, res ) {
-		common.twitch.getProfileInfo( function( err, profileInfo ) {
+		common.twitch.getProfileInfo( function( error, profileInfo ) {
 			// Explicitly allow any client to access this resource.
 			// (Necessary for client-side applications like the chrome extension)
 			res.header( 'Access-Control-Allow-Origin', '*' );
 
-			if ( err ) {
+			if ( error ) {
 				console.error( 'Error retrieving information from twitch' );
-				console.error( err );
+				console.error( error );
 				res.status( 500 ).send();
 			} else {
 				res.status( 200 ).send( profileInfo );
