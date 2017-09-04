@@ -35,7 +35,7 @@ module.exports = function( db ) {
 				} else {
 					// Fallback: query the channel last updated time
 					const requestSettings = {
-						url: `https://api.twitch.tv/kraken/channels/${process.env.TWITCH_USERNAME}`,
+						url: `https://api.twitch.tv/kraken/channels/${process.env.TWITCH_USER_ID}`,
 						headers: requestHeaders
 					};
 					request( requestSettings, function( error, response, body ) {
