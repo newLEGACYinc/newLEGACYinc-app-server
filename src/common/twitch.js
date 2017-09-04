@@ -20,6 +20,8 @@ module.exports = function( db ) {
 	}
 
 	function getLastOnline( callback ) {
+		console.log( 'getLastOnline' );
+
 		// Most of the time, the last online time will have previously been stored in the DB
 		redisClient.get( LAST_ONLINE_KEY, function gotLastOnlineTime( redisGetError, lastOnlineTime ) {
 			if ( redisGetError ) {
@@ -28,6 +30,7 @@ module.exports = function( db ) {
 				callback( redisGetError );
 			} else {
 				if ( lastOnlineTime ) {
+					console.log( 'got value from DB: ' + lastOnlineTime );
 					callback( null, lastOnlineTime );
 				} else {
 					// Fallback: query the channel last updated time
@@ -37,6 +40,7 @@ module.exports = function( db ) {
 					};
 					request( requestSettings, function( error, response, body ) {
 						const bodyAsJSON = JSON.parse( body );
+						console.log( 'got value from server: ' + bodyAsJSON.updated_at );
 						callback( error, bodyAsJSON.updated_at );
 					} );
 				}
