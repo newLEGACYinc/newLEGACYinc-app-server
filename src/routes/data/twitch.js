@@ -1,6 +1,6 @@
 module.exports = function( common ) {
 	var express = require( 'express' );
-	var router = express.Router( { mergeParams: true } );
+	var router = express.Router();
 
 	router.get( '/lastOnline', function twitchGetLastOnline( req, res ) {
 		common.twitch.getLastOnline( function( error, lastOnline ) {
