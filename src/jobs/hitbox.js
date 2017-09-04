@@ -5,7 +5,7 @@ module.exports = function( db, sender ) {
 	var moment = require( 'moment' );
 
 	// Private variables
-	var KEY = 'hitbox';
+	var KEY = 'Hitbox';
 	const redisClient = db.getRedisClient();
 	const LAST_ONLINE_KEY = 'hitboxLastOnline';
 

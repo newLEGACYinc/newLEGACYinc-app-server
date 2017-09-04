@@ -4,7 +4,7 @@ module.exports = function( common, db, sender ) {
 	var request = require( 'request' );
 
 	// Private variables
-	var KEY = 'twitch';
+	var KEY = 'Twitch';
 	const redisClient = db.getRedisClient();
 	const LAST_ONLINE_KEY = 'twitchChannelStatus';
 
