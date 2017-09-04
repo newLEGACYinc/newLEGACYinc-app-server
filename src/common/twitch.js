@@ -36,7 +36,8 @@ module.exports = function( db ) {
 						headers: requestHeaders
 					};
 					request( requestSettings, function( error, response, body ) {
-						callback( error, body.updated_at );
+						const bodyAsJSON = JSON.parse( body );
+						callback( error, bodyAsJSON.updated_at );
 					} );
 				}
 			}
