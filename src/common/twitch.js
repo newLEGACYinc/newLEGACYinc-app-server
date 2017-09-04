@@ -1,5 +1,6 @@
 module.exports = function( db ) {
 	var request = require( 'request' );
+	var moment = require( 'moment' );
 	const redisClient = db.getRedisClient();
 	const LAST_ONLINE_KEY = 'twitchChannelLastOnlineTime';
 
@@ -15,13 +16,16 @@ module.exports = function( db ) {
 		};
 		request( requestSettings, function( error, response, body ) {
 			var bodyAsJSON = JSON.parse( body );
+
+			if ( bodyAsJSON.channel.status ) {
+				redisClient.set( LAST_ONLINE_KEY, moment().format() );
+			}
+
 			callback( error, bodyAsJSON.stream );
 		} );
 	}
 
 	function getLastOnline( callback ) {
-		console.log( 'getLastOnline' );
-
 		// Most of the time, the last online time will have previously been stored in the DB
 		redisClient.get( LAST_ONLINE_KEY, function gotLastOnlineTime( redisGetError, lastOnlineTime ) {
 			if ( redisGetError ) {
@@ -30,7 +34,6 @@ module.exports = function( db ) {
 				callback( redisGetError );
 			} else {
 				if ( lastOnlineTime ) {
-					console.log( 'got value from DB: ' + lastOnlineTime );
 					callback( null, lastOnlineTime );
 				} else {
 					// Fallback: query the channel last updated time
@@ -40,9 +43,7 @@ module.exports = function( db ) {
 					};
 					request( requestSettings, function( error, response, body ) {
 						const bodyAsJSON = JSON.parse( body );
-						console.log( 'got value from server: ' );
-						console.log( bodyAsJSON );
-						callback( error, bodyAsJSON.updated_at );
+						callback( error, moment( bodyAsJSON.updated_at ).format() );
 					} );
 				}
 			}
