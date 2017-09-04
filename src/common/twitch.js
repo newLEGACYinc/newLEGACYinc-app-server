@@ -17,7 +17,7 @@ module.exports = function( db ) {
 		request( requestSettings, function( error, response, body ) {
 			var bodyAsJSON = JSON.parse( body );
 
-			if ( bodyAsJSON.channel.status ) {
+			if ( bodyAsJSON.channel ) {
 				redisClient.set( LAST_ONLINE_KEY, moment().format() );
 			}
 
