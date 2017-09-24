@@ -19,7 +19,7 @@ module.exports = function( db ) {
 
 			console.log( `getProfileInfo` );
 			console.log( bodyAsJSON );
-			if ( bodyAsJSON.channel ) {
+			if ( bodyAsJSON.stream.channel ) {
 				console.log( `setting lastOnlineTime to ${moment().format()}` );
 				redisClient.set( LAST_ONLINE_KEY, moment().format() );
 			}
