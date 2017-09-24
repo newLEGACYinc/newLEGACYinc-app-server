@@ -17,10 +17,8 @@ module.exports = function( db ) {
 		request( requestSettings, function( error, response, body ) {
 			var bodyAsJSON = JSON.parse( body );
 
-			console.log( `getProfileInfo` );
-			console.log( bodyAsJSON );
+			// If the stream is live, save the current time
 			if ( bodyAsJSON.stream.channel ) {
-				console.log( `setting lastOnlineTime to ${moment().format()}` );
 				redisClient.set( LAST_ONLINE_KEY, moment().format() );
 			}
 
@@ -29,8 +27,6 @@ module.exports = function( db ) {
 	}
 
 	function getLastOnline( callback ) {
-		console.log( 'getLastOnline' );
-
 		// Most of the time, the last online time will have previously been stored in the DB
 		redisClient.get( LAST_ONLINE_KEY, function gotLastOnlineTime( redisGetError, lastOnlineTime ) {
 			if ( redisGetError ) {
@@ -38,7 +34,6 @@ module.exports = function( db ) {
 				console.error( redisGetError );
 				callback( redisGetError );
 			} else {
-				console.log( `lastOnlineTime = ${lastOnlineTime}` );
 				if ( lastOnlineTime ) {
 					callback( null, lastOnlineTime );
 				} else {
@@ -49,7 +44,6 @@ module.exports = function( db ) {
 					};
 					request( requestSettings, function( error, response, body ) {
 						const bodyAsJSON = JSON.parse( body );
-						console.log( `got from channel info: ${bodyAsJSON.updated_at}` );
 						callback( error, moment( bodyAsJSON.updated_at ).format() );
 					} );
 				}
