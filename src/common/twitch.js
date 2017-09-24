@@ -18,7 +18,7 @@ module.exports = function( db ) {
 			var bodyAsJSON = JSON.parse( body );
 
 			// If the stream is live, save the current time
-			if ( bodyAsJSON.stream.channel ) {
+			if ( bodyAsJSON.stream && bodyAsJson.stream.channel ) {
 				redisClient.set( LAST_ONLINE_KEY, moment().format() );
 			}
 
