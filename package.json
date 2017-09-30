@@ -1,6 +1,6 @@
 {
   "name": "newLEGACYinc-app-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Server-side application for the newLEGACYinc app",
   "main": "src/app.js",
   "scripts": {

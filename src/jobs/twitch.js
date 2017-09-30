@@ -30,6 +30,7 @@ module.exports = function( common, db, sender ) {
 		isLive( function( isLiveError, newInfo ) {
 			console.log( 'isLive callback' );
 			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
+				console.log( `\tpreviousInfo (${previousInfo})` );
 				if ( redisGetError ) {
 					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
 					console.error( redisGetError );

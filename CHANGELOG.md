@@ -1,5 +1,9 @@
 # Changelog - newLEGACYinc-app-server
 
+### 1.1.1
+
+ - Fix Twitch notification logic
+
 ### 1.1.0
 
  - Major server rewrite
