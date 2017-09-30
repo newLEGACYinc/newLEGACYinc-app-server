@@ -1,42 +1,65 @@
-module.exports = function( common, sender ) {
+module.exports = function( common, db, sender ) {
 	// Module imports
 	var moment = require( 'moment' );
 	var request = require( 'request' );
 
 	// Private variables
-	var KEY = 'twitch';
-	var online = false;
+	var KEY = 'Twitch';
+	const redisClient = db.getRedisClient();
+	const LAST_ONLINE_KEY = 'twitchChannelStatus';
 
-	// callback(streamInfo) if the stream is Live
-	// callback(null) if the stream is offline
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, stream ) {
 			if ( err ) {
-				// we weren't able to get our profile info from the network
-				// use our previous value for the stream status
-				callback( online );
+				console.error( 'Failure to get the twitch profile info' );
+				console.error( err );
+				callback( err );
 			} else {
-				callback( stream );
+				callback( err, stream );
 			}
 		} );
 	}
 
 	// notify users that about the stream status
-	function notify( info, callback ) {
-		var title = 'Live on Twitch!';
-		var message = info.channel.status;
+	function notify( message, callback ) {
+		const title = 'Live on Twitch!';
 		sender.send( title, message, KEY, callback );
 	}
 
 	function job( callback ) {
-		isLive( function( info ) {
-			var previouslyOnline = online;
-			online = info;
-			if ( online && !previouslyOnline ) {
-				notify( info, callback );
-			} else {
-				callback();
-			}
+		isLive( function( isLiveError, newInfo ) {
+			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
+				if ( redisGetError ) {
+					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
+					console.error( redisGetError );
+					callback( redisGetError );
+				} else {
+					if ( isLiveError ) {
+						callback();
+					} else {
+						const currentInfo = newInfo ? newInfo.channel.status : null;
+
+						var afterRedisAction = function( redisError ) {
+							if ( redisError ) {
+								console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
+								console.error( redisError );
+							}
+
+							if ( !previousInfo && currentInfo ) {
+								notify( currentInfo, callback );
+							} else {
+								callback();
+							}
+						};
+
+						if ( currentInfo ) {
+							redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
+						} else {
+							redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
+						}
+					}
+				}
+			} );
 		} );
 	}
 

@@ -5,7 +5,7 @@ module.exports = function( sender ) {
 	var request = require( 'request' );
 
 	// Private variables
-	var KEY = 'youTube';
+	var KEY = 'YouTube';
 	var lastVideoTime = moment(); // Time of last new video, initialized to server start
 
 	/**

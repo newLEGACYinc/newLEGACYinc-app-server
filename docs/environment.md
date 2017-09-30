@@ -3,7 +3,7 @@
   - [General](#general)
   - [Database](#database)
   - External Services
-    - [Google Cloud Messaging](#gcm)
+    - [Firebase Cloud Messaging](#fcm)
     - [hitbox](#hitbox)
     - [Instagram](#instagram)
     - [Twitch](#twitch)
@@ -23,9 +23,9 @@
 
 ## External Services
 
-### GCM
+### FCM
 
-  - `GCM_API_KEY`
+  - `FCM_API_KEY`
 
 ### hitbox
 

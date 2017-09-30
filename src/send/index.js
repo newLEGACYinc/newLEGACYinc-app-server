@@ -1,7 +1,7 @@
-module.exports = function( db ) {
+module.exports = function( ) {
 
 	// Module imports
-	var gcm = require( __dirname + '/gcm' )( db );
+	var fcm = require( __dirname + '/fcm' )( );
 
 	function send( title, message, key, callback ) {
 
@@ -10,7 +10,7 @@ module.exports = function( db ) {
 
 		// NOTE if adding more notification services, write new code to ensure
 		// that callback only gets called once, after each service has finished
-		gcm.send( title, message, key, callback );
+		fcm.send( title, message, key, callback );
 	}
 
 	return {

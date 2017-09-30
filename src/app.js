@@ -4,14 +4,14 @@ var app = express();
 var fs = require( 'fs' );
 var http = require( 'http' );
 var bodyParser = require( 'body-parser' );
-require( 'log4js' ).replaceConsole();
 
 // MODULE IMPORTS
-var common = require( __dirname + '/common' )();
 var db = require( __dirname + '/db' )();
+var common = require( __dirname + '/common' )( db );
 var routes = require( __dirname + '/routes' )( common, db );
-var sender = require( __dirname + '/send' )( db );
-var jobs = require( __dirname + '/jobs' )( common, sender );
+var sender = require( __dirname + '/send' )( );
+var jobs = require( __dirname + '/jobs' )( common, db, sender );
+require( 'log4js' ).replaceConsole();
 
 // EXPRESS CONFIG
 app.set( 'port', process.env.PORT || 3000 );
@@ -22,9 +22,6 @@ app.use( bodyParser.json() );
 // EXPRESS ROUTING
 app.get( '/', routes.index );
 app.use( '/data', routes.data );
-app.put( '/register', routes.register );
-app.put( '/settings', routes.settings.update );
-app.get( '/settings', routes.settings.get );
 
 // START SERVER
 var serverHTTP = http.createServer( app ).listen( process.env.PORT, function() {
