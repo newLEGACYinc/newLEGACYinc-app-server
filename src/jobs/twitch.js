@@ -28,7 +28,7 @@ module.exports = function( common, db, sender ) {
 
 	function job( callback ) {
 		isLive( function( isLiveError, newInfo ) {
-			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
+			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previouslyOnline ) {
 				if ( redisGetError ) {
 					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
 					console.error( redisGetError );
@@ -38,7 +38,7 @@ module.exports = function( common, db, sender ) {
 						callback();
 					} else {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
-						const shouldNotify = ( !previousInfo ) && currentInfo;
+						const shouldNotify = ( !previouslyOnline ) && currentInfo;
 
 						var afterRedisAction =  function( redisError ) {
 							if ( redisError ) {
