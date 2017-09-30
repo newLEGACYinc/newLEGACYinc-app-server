@@ -28,12 +28,14 @@ module.exports = function( common, db, sender ) {
 
 	function job( callback ) {
 		isLive( function( isLiveError, newInfo ) {
+			console.log( 'isLive callback' );
 			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
 				if ( redisGetError ) {
 					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
 					console.error( redisGetError );
 					callback( redisGetError );
 				} else {
+					console.log( `\tGot ${LAST_ONLINE_KEY} from redis database` );
 					if ( isLiveError ) {
 						callback();
 					} else {
@@ -46,15 +48,19 @@ module.exports = function( common, db, sender ) {
 							}
 
 							if ( !previousInfo && currentInfo ) {
+								console.log( `\tno previousInfo and currentInfo, notify` );
 								notify( currentInfo, callback );
 							} else {
+								console.log( `\tpreviousInfo or no currentInfo, return` );
 								callback();
 							}
 						};
 
 						if ( currentInfo ) {
+							console.log( `\tcurrentInfo (${currentInfo}), setting currentInfo to the channel status` );
 							redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
 						} else {
+							console.log( `\tno currentInfo, deleting the channel status` );
 							redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
 						}
 					}
