@@ -40,7 +40,7 @@ module.exports = function( common, db, sender ) {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
 						const shouldNotify = ( !previouslyOnline ) && currentInfo;
 
-						var afterRedisAction =  function( redisError ) {
+						var afterRedisAction = function( redisError ) {
 							if ( redisError ) {
 								console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
 								console.error( redisError );
