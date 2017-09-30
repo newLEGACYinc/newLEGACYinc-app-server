@@ -57,14 +57,14 @@ module.exports = function( common, db, sender ) {
 						};
 
 						console.log( `\tpreviousInfo (${previousInfo})` );
-						const shouldNotifiy = ( !previousInfo ) && currentInfo;
+						const shouldNotify = ( !previousInfo ) && currentInfo;
 						console.log( `\tshouldNotify? (${shouldNotify})` );
 						if ( currentInfo ) {
 							console.log( `\tcurrentInfo (${currentInfo}), setting currentInfo to the channel status` );
-							redisClient.set( LAST_ONLINE_KEY, currentInfo, generateAfterRedisActionFunction( shouldNotifiy, currentInfo ) );
+							redisClient.set( LAST_ONLINE_KEY, currentInfo, generateAfterRedisActionFunction( shouldNotify, currentInfo ) );
 						} else {
 							console.log( `\tno currentInfo, deleting the channel status` );
-							redisClient.del( LAST_ONLINE_KEY, generateAfterRedisActionFunction( shouldNotifiy, currentInfo ) );
+							redisClient.del( LAST_ONLINE_KEY, generateAfterRedisActionFunction( shouldNotify, currentInfo ) );
 						}
 					}
 				}
