@@ -46,7 +46,7 @@ module.exports = function( common, db, sender ) {
 								console.error( redisError );
 							}
 
-							if ( shouldNotifiy ) {
+							if ( shouldNotify ) {
 								notify( currentInfo, callback );
 							} else {
 								callback();
