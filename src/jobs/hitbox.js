@@ -7,7 +7,7 @@ module.exports = function( db, sender ) {
 	// Private variables
 	var KEY = 'Hitbox';
 	const redisClient = db.getRedisClient();
-	const LAST_ONLINE_KEY = 'hitboxLastOnline';
+	const LAST_ONLINE_KEY = 'HITBOX_LAST_ONLINE';
 
 	/**
 	 * Is the hitbox stream currently live?

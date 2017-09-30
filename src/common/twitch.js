@@ -2,7 +2,7 @@ module.exports = function( db ) {
 	var request = require( 'request' );
 	var moment = require( 'moment' );
 	const redisClient = db.getRedisClient();
-	const LAST_ONLINE_KEY = 'twitchChannelLastOnlineTime';
+	const LAST_ONLINE_KEY = 'TWITCH_LAST_ONLINE';
 
 	var requestHeaders = {
 		'Accept': 'application/vnd.twitchtv.v5+json',
