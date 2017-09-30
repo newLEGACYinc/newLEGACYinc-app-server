@@ -6,7 +6,7 @@ module.exports = function( common, db, sender ) {
 	// Private variables
 	var KEY = 'Twitch';
 	const redisClient = db.getRedisClient();
-	const LAST_ONLINE_KEY = 'twitchChannelStatus';
+	const LAST_ONLINE_KEY = 'TWITCH_CHANNEL_STATUS';
 
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, stream ) {
@@ -28,7 +28,7 @@ module.exports = function( common, db, sender ) {
 
 	function job( callback ) {
 		isLive( function( isLiveError, newInfo ) {
-			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previousInfo ) {
+			redisClient.get( LAST_ONLINE_KEY, function gotLastOnline( redisGetError, previouslyOnline ) {
 				if ( redisGetError ) {
 					console.error( `Failed to get ${LAST_ONLINE_KEY} from redis database` );
 					console.error( redisGetError );
@@ -38,6 +38,7 @@ module.exports = function( common, db, sender ) {
 						callback();
 					} else {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
+						const shouldNotify = ( !previouslyOnline ) && currentInfo;
 
 						var afterRedisAction = function( redisError ) {
 							if ( redisError ) {
@@ -45,7 +46,7 @@ module.exports = function( common, db, sender ) {
 								console.error( redisError );
 							}
 
-							if ( !previousInfo && currentInfo ) {
+							if ( shouldNotify ) {
 								notify( currentInfo, callback );
 							} else {
 								callback();
