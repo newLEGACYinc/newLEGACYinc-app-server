@@ -36,8 +36,8 @@ module.exports = function( common, db, sender ) {
 					callback( redisGetError );
 				} else {
 					console.log( `\tGot ${LAST_ONLINE_KEY} from redis database` );
-					if ( previousInfo || isLiveError ) {
-						console.log( `\tHave previousInfo (${previousInfo}) or isLiveError (${isLiveError}), so we're not live` );
+					if ( isLiveError ) {
+						console.log( `\tHave isLiveError (${isLiveError}), so we're not live` );
 						callback();
 					} else {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
@@ -48,8 +48,8 @@ module.exports = function( common, db, sender ) {
 								console.error( redisError );
 							}
 
-							if ( currentInfo ) {
-								console.log( `\tcurrentInfo, notify` );
+							if ( !previousInfo && currentInfo ) {
+								console.log( `\tno previousInfo and currentInfo, notify` );
 								notify( currentInfo, callback );
 							} else {
 								console.log( `\tno currentInfo, return` );
