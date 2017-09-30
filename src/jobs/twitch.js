@@ -40,19 +40,17 @@ module.exports = function( common, db, sender ) {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
 						const shouldNotify = ( !previousInfo ) && currentInfo;
 
-						var afterRedisAction = function( ) {
-							return function( redisError ) {
-								if ( redisError ) {
-									console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
-									console.error( redisError );
-								}
+						var afterRedisAction =  function( redisError ) {
+							if ( redisError ) {
+								console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
+								console.error( redisError );
+							}
 
-								if ( shouldNotifiy ) {
-									notify( currentInfo, callback );
-								} else {
-									callback();
-								}
-							};
+							if ( shouldNotifiy ) {
+								notify( currentInfo, callback );
+							} else {
+								callback();
+							}
 						};
 
 						if ( currentInfo ) {
