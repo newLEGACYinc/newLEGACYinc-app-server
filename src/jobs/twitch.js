@@ -40,8 +40,10 @@ module.exports = function( common, db, sender ) {
 						callback();
 					} else {
 						const currentInfo = newInfo ? newInfo.channel.status : null;
+						const shouldNotify = ( !previousInfo ) && currentInfo;
+						console.log( `\tshouldNotify? (${shouldNotify})` );
 
-						var generateAfterRedisActionFunction = function( shouldNotifiy, currentInfo ) {
+						var afterRedisAction = function( ) {
 							return function( redisError ) {
 								if ( redisError ) {
 									console.error( `Failed to set ${LAST_ONLINE_KEY} from redis database` );
@@ -57,15 +59,12 @@ module.exports = function( common, db, sender ) {
 							};
 						};
 
-						console.log( `\tpreviousInfo (${previousInfo})` );
-						const shouldNotify = ( !previousInfo ) && currentInfo;
-						console.log( `\tshouldNotify? (${shouldNotify})` );
 						if ( currentInfo ) {
 							console.log( `\tcurrentInfo (${currentInfo}), setting currentInfo to the channel status` );
-							redisClient.set( LAST_ONLINE_KEY, currentInfo, generateAfterRedisActionFunction( shouldNotify, currentInfo ) );
+							redisClient.set( LAST_ONLINE_KEY, currentInfo, afterRedisAction );
 						} else {
 							console.log( `\tno currentInfo, deleting the channel status` );
-							redisClient.del( LAST_ONLINE_KEY, generateAfterRedisActionFunction( shouldNotify, currentInfo ) );
+							redisClient.del( LAST_ONLINE_KEY, afterRedisAction );
 						}
 					}
 				}
