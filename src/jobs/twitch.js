@@ -34,7 +34,6 @@ module.exports = function( common, db, sender ) {
 					console.error( redisGetError );
 					callback( redisGetError );
 				} else {
-					console.log( `\tGot ${LAST_ONLINE_KEY} from redis database` );
 					if ( isLiveError ) {
 						callback();
 					} else {
