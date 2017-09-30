@@ -6,7 +6,7 @@ module.exports = function( common, db, sender ) {
 	// Private variables
 	var KEY = 'Twitch';
 	const redisClient = db.getRedisClient();
-	const LAST_ONLINE_KEY = 'twitchChannelStatus';
+	const LAST_ONLINE_KEY = 'TWITCH_CHANNEL_STATUS';
 
 	function isLive( callback ) {
 		common.twitch.getProfileInfo( function( err, stream ) {
